@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.backend</groupId>
+    <artifactId>backend</artifactId>
+    <version>0.1</version>
+    <name>backend</name>
+    <description>聚合服务</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>backend_notice</module>
+        <module>backend_paper</module>
+        <module>backend_portal</module>
+        <module>backend_search</module>
+        <module>backend_user</module>
+    </modules>
+</project>
