@@ -1,10 +1,10 @@
-package com.backend.backend_portal;
+package com.backend.paper;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendPortalApplicationTests {
+class BackendPaperApplicationTests {
 
     @Test
     void contextLoads() {

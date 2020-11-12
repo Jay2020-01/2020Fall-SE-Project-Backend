@@ -1,10 +1,10 @@
-package com.backend.backend_search;
+package com.backend.common;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendSearchApplicationTests {
+class BackendCommonApplicationTests {
 
     @Test
     void contextLoads() {

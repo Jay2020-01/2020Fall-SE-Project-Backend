@@ -1,10 +1,10 @@
-package com.backend.backend_user;
+package com.backend.notice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BackendUserApplicationTests {
+class BackendNoticeApplicationTests {
 
     @Test
     void contextLoads() {

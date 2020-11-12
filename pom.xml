@@ -15,5 +15,7 @@
         <module>backend_portal</module>
         <module>backend_search</module>
         <module>backend_user</module>
+        <module>backend_common</module>
     </modules>
+
 </project>
