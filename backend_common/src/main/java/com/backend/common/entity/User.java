@@ -10,14 +10,15 @@ import lombok.ToString;
 public class User {
 
     private Integer userId;
-    private String name;    //用户名
-    private String password;// 性别
-    private String gender;  // 邮箱
-    private String mail;    // 手机号
-    private String phone;   // 头像路径
-    private String avatar;  // 专业领域
-    private String major;   // 学校
-    private String campus;  // 机构
+    private String name;    // 用户名
+    private String password;// 密码
+    private String gender;  // 性别
+    private String mail;    // 邮箱
+    private String phone;   // 手机号
+    private String avatar;  // 头像路径
+    private String major;   // 专业
+    private String campus;  // 大学
     private String institution;//机构
+    private Integer isAdmin;// 是否管理员
 
 }

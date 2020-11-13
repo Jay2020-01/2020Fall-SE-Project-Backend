@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.backend.user.dao.FavorDao">
+
+    <resultMap id="Favor" type="favor">
+        <id property="paperId" column="paper_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="favorTime" column="favor_time"/>
+    </resultMap>
+
+    <insert id="addFavor">
+        Insert Into favor values (#{paperId},#{userId},#{time})
+    </insert>
+
+    <select id="getFavorList" parameterType="Integer" resultType="Integer">
+        SELECT paper_id
+        FROM favor
+        WHERE user_id = #{userId}
+    </select>
+
+    <select id="isFavored" parameterType="Integer" resultType="Integer">
+        SELECT paper_id FROM favor
+        WHERE user_id = #{userId} and paper_id = #{paperId}
+    </select>
+
+    <delete id="removeFavor" parameterType="Integer">
+        delete FROM favor
+        WHERE user_id = #{userId} and paper_id = #{paperId}
+    </delete>
+
+</mapper>
