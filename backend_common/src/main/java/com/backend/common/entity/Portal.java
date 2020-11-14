@@ -8,7 +8,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 public class Portal {
-    private Integer portalId;
+    private Integer id;
     private String expertInfo;
     private Integer userId;
 

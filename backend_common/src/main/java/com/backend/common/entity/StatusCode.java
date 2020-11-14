@@ -16,30 +16,33 @@ public class StatusCode {
     /**
      * 用户名或密码错误
      */
-    public static final int LOGINERROR = 202;
+    public static final int LOGIN_ERROR = 202;
     /**
      * token过期
      */
-    public static final int TOKENEXPIREE = 203;
+    public static final int TOKEN_EXPIREE = 203;
     /**
      * 权限不足
      */
-    public static final int ACCESSERROR = 403;
+    public static final int ACCESS_ERROR = 403;
     /**
      * 远程调用失败
      */
-    public static final int REMOTEERROR = 204;
+    public static final int REMOTE_ERROR = 204;
     /**
      * 重复操作
      */
-    public static final int REPERROR = 205;
+    public static final int REP_ERROR = 205;
     /**
      * 业务层错误
      */
-    public static final int SERVICEERROR = 500;
+    public static final int SERVICE_ERROR = 500;
     /**
      * 资源不存在
      */
     public static final int NOTFOUND = 404;
-
+    /**
+     * 信息错误
+     */
+    public static final int INFORMATION_ERROR = 206;
 }
