@@ -3,13 +3,13 @@ package com.backend.user.service;
 import com.backend.common.entity.User;
 import com.backend.user.dao.FollowDao;
 import com.backend.user.dao.UserDao;
-import com.backend.user.utils.DateUtil;
-import com.backend.user.utils.JwtTokenUtil;
+import com.backend.common.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -19,9 +19,6 @@ public class FollowService {
 
     @Autowired
     private FollowDao followDao;
-
-    @Autowired
-    private DateUtil dateUtil;
 
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
@@ -37,7 +34,7 @@ public class FollowService {
             throw new RuntimeException("关注重复");
         }
 
-        followDao.addConnection(user.getUserId(),followingId,dateUtil.getCurrentDate());
+        followDao.addConnection(user.getUserId(),followingId,new Date());
     }
 
     public void removeFollower(Integer followerId) {

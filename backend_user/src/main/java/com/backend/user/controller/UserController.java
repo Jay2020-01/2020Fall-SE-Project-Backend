@@ -6,9 +6,8 @@ import com.backend.common.entity.User;
 import com.backend.user.dao.UserDao;
 import com.backend.user.service.UserService;
 import com.backend.user.utils.FormatUtil;
-import com.backend.user.utils.JwtTokenUtil;
+import com.backend.common.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,6 +30,13 @@ public class UserController {
     @Autowired
     private FormatUtil formatUtil;
 
+    @RequestMapping("/demo/{id}")
+    public Result demo(@PathVariable Integer id) {
+        System.out.println("id = " + id);
+        String name = jwtTokenUtil.getUsernameFromRequest(request);
+        Integer userId = jwtTokenUtil.getUserIdFromRequest(request);
+        return Result.create(StatusCode.OK,"ok",name+ " : "+userId);
+    }
     /**
      * 登录返回token
      */
@@ -42,11 +48,25 @@ public class UserController {
         try {
             Map<String, Object> map = userService.login(user);
             return Result.create(StatusCode.OK, "登录成功", map);
-        } catch (UsernameNotFoundException ue) {
-            return Result.create(StatusCode.LOGINERROR, "登录失败，用户名或密码错误");
-        } catch (RuntimeException re) {
-            return Result.create(StatusCode.LOGINERROR, re.getMessage());
+        } catch (RuntimeException ue) {
+            return Result.create(StatusCode.LOGIN_ERROR, "登录失败，用户名或密码错误");
         }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = { "/checkToken" }, method = RequestMethod.POST)
+    public int checkToken(@RequestParam(value = "authToken") String authToken) {
+        if (JwtTokenUtil.isNotBlank(authToken)) {
+            try {
+                boolean flag = jwtTokenUtil.isTokenExpired(authToken);
+                if (flag) // 过期
+                    return 201;
+                else  // 认证通过
+                    return 200;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } return 202; //为空
     }
 
     /**
@@ -64,16 +84,6 @@ public class UserController {
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, "注册失败，" + e.getMessage());
         }
-    }
-
-    /**
-     * 用户退出登录
-     * 删除redis中的token
-     */
-    @GetMapping("/logout")
-    public Result logout() {
-        userService.logout();
-        return Result.create(StatusCode.OK, "退出成功");
     }
 
     /**

@@ -2,7 +2,6 @@ package com.backend.user.utils;
 
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,8 +10,6 @@ public class FormatUtil {
 
 
     private static final Pattern MAIL_PATTERN = Pattern.compile("\\w+@\\w+(\\.\\w{2,3})*\\.\\w{2,3}");//邮箱格式
-
-    private static final Pattern IP_PATTERN = Pattern.compile("([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}");//ip格式
 
     /**
      * 邮箱格式校验
@@ -75,48 +72,4 @@ public class FormatUtil {
         return format;
     }
 
-
-    /**
-     * 检查数字是否为非负数 >= 0
-     *
-     * @param numbers
-     * @return true -> 全部数字为非负数
-     */
-    public boolean checkNotNegative(Integer... numbers) {
-        for (Integer number : numbers) {
-            if (number < 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * 检查数字是否为正数 >0
-     *
-     * @param numbers
-     * @return true -> 全部数字为正数
-     */
-    public boolean checkPositive(Integer... numbers) {
-        for (Integer number : numbers) {
-            if (number <= 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean hasObject(Collection<? extends Object> collections, Object obj) {
-
-        for (Object o : collections) {
-
-        }
-
-        return false;
-    }
-
-    public boolean checkIP(String name) {
-        Matcher m = IP_PATTERN.matcher(name);
-        return m.matches();
-    }
 }

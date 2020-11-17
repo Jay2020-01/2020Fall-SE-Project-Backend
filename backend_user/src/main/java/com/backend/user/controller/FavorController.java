@@ -1,10 +1,13 @@
 package com.backend.user.controller;
 
-import com.backend.common.entity.*;
+import com.backend.common.entity.Paper;
+import com.backend.common.entity.Result;
+import com.backend.common.entity.StatusCode;
+import com.backend.common.entity.User;
 import com.backend.user.dao.UserDao;
 import com.backend.user.feign.NoticeClient;
 import com.backend.user.service.FavorService;
-import com.backend.user.utils.JwtTokenUtil;
+import com.backend.common.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +25,18 @@ public class FavorController {
     private HttpServletRequest request;
     @Autowired
     private FavorService favorService;
+
     @Autowired
     private NoticeClient noticeClient;
 
     @GetMapping("/hi")
     public String hi(){
         return this.noticeClient.hello();
+    }
+    @GetMapping("/demo/{id}")
+    public Result demo(@PathVariable Integer id){
+        if(id > 0) return Result.create(StatusCode.OK,"ok","okkk!");
+        else return Result.create(StatusCode.ERROR,"Error");
     }
 
     @GetMapping("/getFavor")
@@ -65,5 +74,4 @@ public class FavorController {
             return Result.create(StatusCode.ERROR, e.getMessage());
         }
     }
-
 }

@@ -4,25 +4,21 @@ import com.backend.common.entity.Paper;
 import com.backend.common.entity.User;
 import com.backend.user.dao.FavorDao;
 import com.backend.user.dao.UserDao;
-import com.backend.user.utils.DateUtil;
-import com.backend.user.utils.JwtTokenUtil;
+import com.backend.common.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class FavorService {
     @Autowired
     private UserDao userDao;
-//    @Autowired
-//    private PaperDao paperDao;
     @Autowired
     private FavorDao favorDao;
-    @Autowired
-    private DateUtil dateUtil;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
@@ -42,7 +38,7 @@ public class FavorService {
 
     public void addFavor(Integer paperId, Integer userId){
 
-        favorDao.addFavor(paperId,userId,dateUtil.getCurrentDate());
+        favorDao.addFavor(paperId,userId,new Date());
     }
 
     public void removeFavor(Integer paperId, Integer userId){

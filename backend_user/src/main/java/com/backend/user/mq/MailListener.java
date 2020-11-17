@@ -1,8 +1,5 @@
 package com.backend.user.mq;
 
-
-import com.backend.user.utils.LoggerUtil;
-import org.slf4j.Logger;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +20,6 @@ public class MailListener {
     @Value("${spring.mail.username}")
     private String fromMail;
 
-    private final Logger logger = LoggerUtil.loggerFactory(this.getClass());
-
     @Autowired
     private JavaMailSender mailSender;
 
@@ -34,9 +29,9 @@ public class MailListener {
         String code = map.get("code");
         try {
             this.sendMail(mail, code);
-            logger.info(mail + "-" + code + "-发送成功");
+            System.out.println(mail + "-" + code + "-发送成功");
         } catch (Exception e) {
-            logger.error(mail + code + "发送失败-" + e.getMessage());
+            System.out.println(mail + code + "发送失败-" + e.getMessage());
         }
     }
 

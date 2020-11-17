@@ -1,0 +1,24 @@
+server:
+  port: 18090
+
+ignore:
+  http-urls:
+    - /user/login
+    - /user/register
+    - /user/checkToken
+
+spring:
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        - id: backend-notice
+          uri: lb://backend-notice
+          predicates:
+            - Path=/message/**
+        - id: backend-user
+          uri: lb://backend-user
+          predicates:
+            - Path=/favor/**, /user/**, /follow/**
