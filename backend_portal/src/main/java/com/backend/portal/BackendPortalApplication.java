@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @EnableDiscoveryClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.backend.common"})
 @MapperScan("com.backend.portal.mapper")
 @ServletComponentScan
 public class BackendPortalApplication {
