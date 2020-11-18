@@ -11,6 +11,7 @@ target/
 !**/src/main/**
 !**/src/test/**
 
+**/*.class
 .apt_generated
 .classpath
 .factorypath

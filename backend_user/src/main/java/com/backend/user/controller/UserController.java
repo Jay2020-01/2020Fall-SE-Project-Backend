@@ -32,10 +32,12 @@ public class UserController {
 
     @RequestMapping("/demo/{id}")
     public Result demo(@PathVariable Integer id) {
-        System.out.println("id = " + id);
+
         String name = jwtTokenUtil.getUsernameFromRequest(request);
         Integer userId = jwtTokenUtil.getUserIdFromRequest(request);
+
         return Result.create(StatusCode.OK,"ok",name+ " : "+userId);
+
     }
     /**
      * 登录返回token
