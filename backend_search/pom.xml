@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <elasticsearch.version>7.6.2</elasticsearch.version>
         <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
     </properties>
 
@@ -42,9 +43,8 @@
 			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.searchbox</groupId>
-			<artifactId>jest</artifactId>
-			<version>6.3.1</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-elasticsearch</artifactId>
 		</dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
