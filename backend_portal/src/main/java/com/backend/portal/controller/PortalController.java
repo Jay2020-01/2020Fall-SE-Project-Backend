@@ -7,12 +7,15 @@ import com.backend.portal.entity.Portal;
 import com.backend.portal.service.PortalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @RestController
 @RequestMapping("/portal")
 public class PortalController {
     @Autowired
     private PortalService portalService;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @GetMapping("/test")
     public Result test() {
@@ -44,5 +47,16 @@ public class PortalController {
         //成功关联用户与门户
         portalService.relateUserToPortal(certification);
         return Result.create(200, "success");
+    }
+
+    @PostMapping("/sendmail")
+    public Result sendmail(String mail){
+        String redisMailCode = redisTemplate.opsForValue().get("MAIL_"+mail);
+        if(redisMailCode!=null){
+            return Result.create(200,"请稍后再发送");
+        }else{
+            portalService.sendMail(mail);
+            return Result.create(200,"发送成功");
+        }
     }
 }
