@@ -14,11 +14,11 @@ spring:
         server-addr: 127.0.0.1:8848
     gateway:
       routes:
-        - id: backend-notice
-          uri: lb://backend-notice
+        - id: backend-search
+          uri: lb://backend-search
           predicates:
-            - Path=/message/**
-        - id: backend-user
-          uri: lb://backend-user
+            - Path=/search/**
+        - id: backend-server
+          uri: lb://backend-server
           predicates:
-            - Path=/favor/**, /user/**, /follow/**
+            - Path=/favor/**, /user/**, /follow/**, /portal/**

@@ -10,12 +10,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>backend_notice</module>
-        <module>backend_paper</module>
-        <module>backend_portal</module>
         <module>backend_search</module>
-        <module>backend_user</module>
-        <module>backend_common</module>
+        <module>backend_server</module>
     </modules>
 
 </project>
