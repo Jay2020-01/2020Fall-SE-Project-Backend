@@ -41,9 +41,9 @@ public class PortalService {
         return false;
     }
 
-    public void relateUserToPortal(Certification certification) {
+    public void relateUserToPortal(Certification certification, Integer userId) {
         Portal portal = portalMapper.selectById(certification.getPortalId());
-        portal.setUserId(certification.getUserId());
+        portal.setUserId(userId);
         portalMapper.updateById(portal);
     }
 

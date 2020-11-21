@@ -6,9 +6,12 @@ import com.backend.server.entity.pojo.Result;
 import com.backend.server.entity.pojo.StatusCode;
 import com.backend.server.service.PortalService;
 import com.backend.server.utils.FormatUtil;
+import com.backend.server.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/portal")
@@ -41,7 +44,7 @@ public class PortalController {
 
 
     @PostMapping("/certification")
-    public Result certificationPortal(@RequestBody Certification certification) {
+    public Result certificationPortal(@RequestBody Certification certification, HttpServletRequest request) {
         //测试姓名、邮箱基本信息是否符合
         boolean isOwner = portalService.checkInformation(certification);
         if (!isOwner) return Result.create(StatusCode.INFORMATION_ERROR, "您的信息不符合认证标准");
@@ -49,7 +52,9 @@ public class PortalController {
         boolean isTrue = portalService.checkMailCode(certification.getEmail(), certification.getCode());
         if (!isTrue) return Result.create(StatusCode.CODE_ERROR, "验证码错误");
         //成功关联用户与门户
-        portalService.relateUserToPortal(certification);
+        JwtTokenUtil util = new JwtTokenUtil();
+        Integer userId = util.getUserIdFromRequest(request);
+        portalService.relateUserToPortal(certification, userId);
         return Result.create(200, "success");
     }
 

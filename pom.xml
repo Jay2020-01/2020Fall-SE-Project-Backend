@@ -12,6 +12,7 @@
     <modules>
         <module>backend_search</module>
         <module>backend_server</module>
+        <module>backend_gateway</module>
     </modules>
 
 </project>
