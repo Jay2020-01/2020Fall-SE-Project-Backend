@@ -5,14 +5,20 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
-@TableName(value = "appeal")
-public class Appeal {
+@TableName(value = "Notice")
+public class Notice {
 
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    private Integer notifierId;
+    private String notifierName;
+    private Integer receiverId;
+    private String receiverName;
     private String content;
-    private Integer userId;
-    private Integer portalId;
-    private Integer isDeal;
+    private Integer isRead;
+    private Integer type;
+    private Date createTime;
 }

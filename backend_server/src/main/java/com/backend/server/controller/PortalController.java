@@ -1,12 +1,12 @@
 package com.backend.server.controller;
 
-import com.backend.server.entity.Certification;
+import com.backend.server.entity.pojo.*;
 import com.backend.server.entity.Portal;
-import com.backend.server.entity.pojo.Result;
-import com.backend.server.entity.pojo.StatusCode;
 import com.backend.server.service.PortalService;
 import com.backend.server.utils.FormatUtil;
 import com.backend.server.utils.JwtTokenUtil;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/portal")
 public class PortalController {
     @Autowired
     private PortalService portalService;
@@ -27,13 +26,30 @@ public class PortalController {
     }
 
 
-    @GetMapping("/view/{portalId}")
-    public Result viewPortal(@PathVariable("portalId") Integer portalId) {
+    @PostMapping("/personal_center/academic_homepage")
+    public Result checkPortal(@Param("id") Integer portalId) {
         Portal portal = portalService.selectById(portalId);
         if (portal == null) return Result.create(StatusCode.NOTFOUND, "门户不存在");
-        return Result.create(200, "success", portal);
+        PortalPage portalPage = new PortalPage();
+        BeanUtils.copyProperties(portal, portalPage);
+        //其他相关信息
+
+        return Result.create(200, "success", portalPage);
     }
 
+
+    @PostMapping("/profile")
+    public Result viewPortal(@Param("id") Integer portalId) {
+        PortalInfo portalInfo = new PortalInfo();
+        Portal portal = portalService.selectById(portalId);
+        if (portal == null) return Result.create(StatusCode.NOTFOUND, "门户不存在");
+        PortalPage portalPage = new PortalPage();
+        BeanUtils.copyProperties(portal, portalPage);
+        //其他相关信息
+
+
+        return Result.create(200, "success", portalInfo);
+    }
 
     @PostMapping("/modify")
     public Result modifyPortal(@RequestBody Portal portal) {
@@ -43,14 +59,15 @@ public class PortalController {
     }
 
 
+    //绑定
     @PostMapping("/certification")
     public Result certificationPortal(@RequestBody Certification certification, HttpServletRequest request) {
         //测试姓名、邮箱基本信息是否符合
-        boolean isOwner = portalService.checkInformation(certification);
-        if (!isOwner) return Result.create(StatusCode.INFORMATION_ERROR, "您的信息不符合认证标准");
+        //boolean isOwner = portalService.checkInformation(certification);
+        //if (!isOwner) return Result.create(StatusCode.INFORMATION_ERROR, "您的信息不符合认证标准");
         //查看验证码是否正确
-        boolean isTrue = portalService.checkMailCode(certification.getEmail(), certification.getCode());
-        if (!isTrue) return Result.create(StatusCode.CODE_ERROR, "验证码错误");
+        //boolean isTrue = portalService.checkMailCode(certification.getEmail(), certification.getCode());
+        //if (!isTrue) return Result.create(StatusCode.CODE_ERROR, "验证码错误");
         //成功关联用户与门户
         JwtTokenUtil util = new JwtTokenUtil();
         Integer userId = util.getUserIdFromRequest(request);
