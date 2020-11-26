@@ -20,13 +20,9 @@ public class PortalController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @GetMapping("/test")
-    public Result test() {
-        return Result.create(200, "success");
-    }
 
 
-    @PostMapping("/personal_center/academic_homepage")
+    @PostMapping("/personal_center/academic_homepage/view")
     public Result checkPortal(@Param("id") Integer portalId) {
         Portal portal = portalService.selectById(portalId);
         if (portal == null) return Result.create(StatusCode.NOTFOUND, "门户不存在");
@@ -38,7 +34,7 @@ public class PortalController {
     }
 
 
-    @PostMapping("/profile")
+    @PostMapping("/profile/view")
     public Result viewPortal(@Param("id") Integer portalId) {
         PortalInfo portalInfo = new PortalInfo();
         Portal portal = portalService.selectById(portalId);
@@ -51,7 +47,7 @@ public class PortalController {
         return Result.create(200, "success", portalInfo);
     }
 
-    @PostMapping("/modify")
+    @PostMapping("/profile/modify")
     public Result modifyPortal(@RequestBody Portal portal) {
         int result = portalService.updateById(portal);
         if (result == 0) return Result.create(StatusCode.ERROR, "更新失败");
@@ -60,7 +56,7 @@ public class PortalController {
 
 
     //绑定
-    @PostMapping("/certification")
+    @PostMapping("/personal_center/academic_homepage/bind")
     public Result certificationPortal(@RequestBody Certification certification, HttpServletRequest request) {
         //测试姓名、邮箱基本信息是否符合
         //boolean isOwner = portalService.checkInformation(certification);

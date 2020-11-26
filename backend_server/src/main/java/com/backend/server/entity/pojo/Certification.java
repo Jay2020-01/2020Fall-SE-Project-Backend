@@ -6,7 +6,7 @@ import lombok.Data;
 public class Certification {
     private Integer portalId;
     //private String expertName;
-    //private String email;
+    private String email;
     //private String code;
     private Integer userId;
 }
