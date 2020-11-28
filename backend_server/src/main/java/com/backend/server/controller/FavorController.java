@@ -55,8 +55,9 @@ public class FavorController {
         }
     }
 
-    @PostMapping("/add/{paperId}")
-    public Result addFavor(@PathVariable Integer paperId){
+    @PostMapping("/collect_}")
+    public Result addFavor(String paper_id){
+        Integer paperId = Integer.parseInt(paper_id);
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
             if(favorService.isFavored(paperId,user.getId()))

@@ -22,9 +22,9 @@ public class FollowController {
     /**
      * 关注用户
      */
-    @PostMapping("/add/{userName}")
-    public Result newFollow(@PathVariable String userName) {
-        Integer followingId  = userService.getUserByName(userName).getId();
+    @PostMapping("/follow_scholar")
+    public Result newFollow(String person_id) {
+        Integer followingId  = userService.getUserById(Integer.parseInt(person_id)).getId();
         try {
             followService.addFollowing(followingId);
             return Result.create(StatusCode.OK, "关注成功");

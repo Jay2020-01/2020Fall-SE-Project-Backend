@@ -22,8 +22,6 @@ public class FavorService {
     @Autowired
     private HttpServletRequest request;
 
-    // TODO
-
     /**
      * 获取当前用户收藏列表
      */
@@ -46,7 +44,7 @@ public class FavorService {
      */
     public void addFavor(Integer paperId, Integer userId){
 //        String title = paperService.getPaperById(paperId).getTitle();
-        Favor favor = new Favor(null, userId, paperId, "title", new Date());
+        Favor favor = new Favor(null, userId, paperId, new Date());
         favorMapper.insert(favor);
     }
 

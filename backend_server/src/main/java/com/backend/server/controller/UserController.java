@@ -36,23 +36,27 @@ public class UserController {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
+    @RequestMapping("/demo")
+    public Result demo() {
+        return Result.create(StatusCode.OK,"ok","test success");
+    }
     @RequestMapping("/demo/{id}")
     public Result demo(@PathVariable Integer id) {
         String name = jwtTokenUtil.getUsernameFromRequest(request);
         Integer userId = jwtTokenUtil.getUserIdFromRequest(request);
-        return Result.create(StatusCode.OK,"ok",name+ " : "+userId);
+        return Result.create(StatusCode.OK,"ok",name+" : "+userId);
     }
 
     /**
      * 登录返回token
      */
     @PostMapping("/login")
-    public Result login(User user) {
-        if (!formatUtil.checkStringNull(user.getUserName(), user.getPassword())) {
+    public Result login(String username, String password) {
+        if (!formatUtil.checkStringNull(username, password)) {
             return Result.create(StatusCode.ERROR, "参数错误");
         }
         try {
-            Map<String, Object> map = userService.login(user);
+            Map<String, Object> map = userService.login(username, password);
             return Result.create(StatusCode.OK, "登录成功", map);
         } catch (RuntimeException ue) {
             return Result.create(StatusCode.LOGIN_ERROR, "登录失败，用户名或密码错误");
@@ -63,14 +67,13 @@ public class UserController {
      * 用户注册
      */
     @PostMapping("/register")
-    public Result register(String name,String password,String mail, String mailCode) {
-
-        if (!formatUtil.checkStringNull(name,password,mail,mailCode)) {
+    public Result register(String name,String password,String mail) {
+        if (!formatUtil.checkStringNull(name,password,mail)) {
             return Result.create(StatusCode.ERROR, "注册失败，字段不完整");
         }
         try {
-            userService.register(name,password,mail,mailCode);
-            return Result.create(StatusCode.OK, "注册成功");
+            Map<String, Object> map = userService.register(name,mail,password);
+            return Result.create(StatusCode.OK, "注册成功",map);
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, "注册失败，" + e.getMessage());
         }
@@ -79,10 +82,10 @@ public class UserController {
     /**
      * 修改个人信息
      */
-    @PostMapping("/updateInfo")
-    public Result updateUser(String gender, String phone,String major, String campus, String institution){
+    @PostMapping("/change_info")
+    public Result updateUser(String nickname,String family_name,String name,String gender, String occupation, String institution){
         try {
-            userService.updateInfo(gender,phone,major,campus,institution);
+            userService.updateInfo(nickname,family_name,name,gender,occupation,institution);
             return Result.create(StatusCode.OK, "更新成功");
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, "更新失败，" + e.getMessage());
@@ -136,10 +139,10 @@ public class UserController {
     /**
      * 修改密码
      */
-    @PostMapping("/updatePassword")
-    public Result updatePassword(String oldPassword, String newPassword) {
+    @PostMapping("/change_password")
+    public Result updatePassword(String newPassword) {
         try {
-            userService.updatePassword(oldPassword, newPassword);
+            userService.updatePassword(newPassword);
             return Result.create(StatusCode.OK, "修改密码成功");
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, e.getMessage());

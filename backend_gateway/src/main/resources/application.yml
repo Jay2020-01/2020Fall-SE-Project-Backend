@@ -3,6 +3,7 @@ server:
 
 ignore:
   http-urls:
+    - /user/demo
     - /user/login
     - /user/register
     - /user/checkToken
@@ -21,4 +22,4 @@ spring:
         - id: backend-server
           uri: lb://backend-server
           predicates:
-            - Path=/favor/**, /user/**, /follow/**, /portal/**
+            - Path=/favor/**, /user/**, /follow/**, /portal/**, /ajax/**

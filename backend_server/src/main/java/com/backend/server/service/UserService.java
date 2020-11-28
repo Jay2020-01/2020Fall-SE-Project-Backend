@@ -24,27 +24,21 @@ public class UserService {
 
     /**
      * 登录
-     * @param user 用户名、密码
+     * @param  username 用户名
+     * @param  password 密码
      * @return 用户名、角色、token
      */
-    public Map<String, Object> login(User user) throws RuntimeException {
+    public Map<String, Object> login(String username, String password) throws RuntimeException {
         try {
-            User dbUser = this.getUserByName(user.getUserName());
+            User dbUser = this.getUserByName(username);
             System.out.println("dbUser = " + dbUser);
-            if (null == dbUser || !user.getPassword().equals(dbUser.getPassword())) {
+            if (null == dbUser || !password.equals(dbUser.getPassword())) {
                 System.out.println("用户密码错误");
                 throw new RuntimeException("用户名或密码错误");
             }
             String role = dbUser.getIsAdmin()==1 ? "ADMIN" : "USER";
             String userInfoStr = dbUser.getId() + ";;" + dbUser.getUserName() + ";;" + dbUser.getIsAdmin();
-            final String randomKey = jwtTokenUtil.getRandomKey();
-            final String token = jwtTokenUtil.generateToken(userInfoStr, randomKey);
-            System.out.println("token = " + token);
-            Map<String, Object> map = new HashMap<>();
-            map.put("name", user.getUserName());
-            map.put("roles", role);
-            map.put("token", token);
-            return map;
+            return createToken(username,userInfoStr,role);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("系统异常! " + e);
@@ -54,45 +48,51 @@ public class UserService {
 
     /**
      * 注册
-     * @param name 用户名
+     * @param username 用户名
+     * @param email 邮箱
      * @param password 密码
-     * @param mail 邮箱
-     * @param mailCode 验证码
+     * @return 用户名、角色、token
      */
-    public void register(String name,String password,String mail, String mailCode) throws RuntimeException {
-
-        if (!checkMailCode(mail, mailCode)) {
-            throw new RuntimeException("验证码错误");
-        }
-        if (getUserByName(name) != null) {
+    public Map<String, Object> register(String username,String email,String password) throws RuntimeException {
+        // if (!checkMailCode(mail, mailCode)) {
+        //     throw new RuntimeException("验证码错误");
+        // }
+        if (getUserByName(username) != null) {
             throw new RuntimeException("用户名已存在");
         }
-        if (getUserByMail(mail) != null) {
+        if (getUserByMail(email) != null) {
             throw new RuntimeException("邮箱已使用");
         }
         User userToAdd = new User();
         userToAdd.setPassword(password);
-        userToAdd.setMail(mail);
-        userToAdd.setUserName(name);
+        userToAdd.setMail(email);
+        userToAdd.setUserName(username);
+        userToAdd.setIsAdmin(0);
         userMapper.insert(userToAdd);
-
+        //TODO 直接自动登录？？返回TOKEN
+        Integer id = getUserByName(username).getId();
+        String userInfoStr = id + ";;" + username + ";;" + 0;
+        return createToken(username,userInfoStr,"USER");
     }
 
     /**
      * 更新用户信息
+     * @param userName 用户名
+     * @param familyName 姓氏
+     * @param name 名字
      * @param gender 性别
-     * @param phone 手机号
-     * @param major 专业
-     * @param campus 大学
-     * @param institution 机构
+     * @param occupation 职业
+     * @param institution 单位
      */
-    public void updateInfo(String gender, String phone,String major, String campus, String institution) {
+    public void updateInfo(String userName,String familyName,String name,String gender,String occupation,String institution) {
         User user = userMapper.selectById(jwtTokenUtil.getUserIdFromRequest(request));
+        if(userName!=null) user.setGender(userName);
+        if(familyName!=null) user.setFamilyName(familyName);
+        if(name!=null) user.setName(name);
         if(gender!=null) user.setGender(gender);
-        if(phone!=null) user.setPhone(phone);
-        if(major!=null) user.setMajor(major);
-        if(campus!=null) user.setCampus(campus);
+        if(occupation!=null) user.setOccupation(occupation);
         if(institution!=null) user.setInstitution(institution);
+        // TODO 更新token、关注表
         userMapper.updateById(user);
     }
 
@@ -108,15 +108,11 @@ public class UserService {
 
     /**
      * 修改密码
-     * @param oldPassword 旧密码
      * @param newPassword 新密码
      */
-    public void updatePassword(String oldPassword, String newPassword) {
+    public void updatePassword(String newPassword) {
 
         User user = userMapper.selectById(jwtTokenUtil.getUserIdFromRequest(request));
-        if (!oldPassword.equals(user.getPassword())) {
-            throw new RuntimeException("密码错误");
-        }
         user.setPassword(newPassword);
         userMapper.updateById(user);
     }
@@ -124,6 +120,19 @@ public class UserService {
 
 
     /*=====================================================================*/
+    /**
+     * 生成token
+     */
+    public Map<String, Object> createToken(String username, String userInfoStr,String role) {
+        final String randomKey = jwtTokenUtil.getRandomKey();
+        final String token = jwtTokenUtil.generateToken(userInfoStr, randomKey);
+        System.out.println("token = " + token);
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", username);
+        map.put("roles", role);
+        map.put("token", token);
+        return map;
+    }
 
     /**
      * 从redis中提取验证码并校验
