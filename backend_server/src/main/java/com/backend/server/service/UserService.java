@@ -1,14 +1,19 @@
 package com.backend.server.service;
 
+import com.backend.server.entity.Notice;
 import com.backend.server.entity.User;
+import com.backend.server.entity.pojo.MessageList;
 import com.backend.server.utils.JwtTokenUtil;
 import com.backend.server.mapper.UserMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -156,5 +161,26 @@ public class UserService {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("mail", mail);
         return userMapper.selectByMap(columnMap).get(0);
+    }
+
+    public List<MessageList> getUserByNotice(List<Notice> notices, Integer userId) {
+        List<MessageList> messageLists = new ArrayList<>();
+        for (Notice notice : notices) {
+            User user;
+            MessageList messageList = new MessageList();
+            if (notice.getNotifierId().equals(userId)) {
+                user = userMapper.selectById(notice.getReceiverId());
+                BeanUtils.copyProperties(user, messageList);
+                messageList.setNotice(notice);
+                messageLists.add(messageList);
+            }
+            else if (notice.getReceiverId().equals(userId)) {
+                user = userMapper.selectById(notice.getReceiverId());
+                BeanUtils.copyProperties(user, messageList);
+                messageList.setNotice(notice);
+                messageLists.add(messageList);
+            }
+        }
+        return messageLists;
     }
 }

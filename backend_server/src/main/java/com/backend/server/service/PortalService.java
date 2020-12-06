@@ -1,7 +1,6 @@
 package com.backend.server.service;
 
 import com.backend.server.entity.Portal;
-import com.backend.server.entity.pojo.Certification;
 import com.backend.server.mapper.PortalMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +41,7 @@ public class PortalService {
         return false;
     }*/
 
-    public void relateUserToPortal(Certification certification, Integer userId) {
-        Portal portal = portalMapper.selectById(certification.getPortalId());
-        portal.setUserId(userId);
-        portalMapper.updateById(portal);
-    }
+
 
     /**
      * 判断验证码

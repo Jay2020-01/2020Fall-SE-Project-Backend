@@ -88,6 +88,12 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <!--MongoDB驱动-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+            <version>2.3.1.RELEASE</version>
+        </dependency>
         <!-- spring-boot-mail 发送邮件 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

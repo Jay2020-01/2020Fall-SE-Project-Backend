@@ -1,15 +1,10 @@
-package com.backend.server.entity;
+package com.backend.server.entity.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.backend.server.entity.Notice;
 import lombok.Data;
 
 @Data
-@TableName(value = "user")
-public class User {
-
-    @TableId(value = "id", type = IdType.AUTO)
+public class MessageList {
     private Integer id;
     private String userName; // 用户名
     private String password; // 密码
@@ -21,4 +16,5 @@ public class User {
     private String occupation; //职业
     private String institution;//机构
     private Integer isAdmin; // 是否管理员
+    private Notice notice;
 }

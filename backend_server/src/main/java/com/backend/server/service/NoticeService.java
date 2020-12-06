@@ -21,7 +21,12 @@ public class NoticeService {
     public List<Notice> getMessageByUserId(Integer userId) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("receiver_id", userId);
+        columnMap.put("type", 1);
         List<Notice> notices = noticeMapper.selectByMap(columnMap);
+        columnMap = new HashMap<>();
+        columnMap.put("notifier_id", userId);
+        columnMap.put("type", 1);
+        notices.addAll(noticeMapper.selectByMap(columnMap));
         return notices;
     }
 

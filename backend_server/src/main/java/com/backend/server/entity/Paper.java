@@ -1,26 +1,32 @@
 package com.backend.server.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.backend.server.entity.paperSon.author;
+import com.backend.server.entity.paperSon.venue;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
+import java.util.List;
 
 @Data
-@TableName(value = "paper")
+@Document(collection = "paper")
 public class Paper {
 
-    @TableId(value = "id", type = IdType.AUTO)
+    @Id
     private Integer id;
     private String title;
-    private Date publishTime;
-    private String keywords;
+    private List<author> authors;
+    private venue venue;
+    private Integer year;
+    private List<String> keywords;
+    private Integer nCitation;
+    private String pageStart;
+    private String pageEnd;
+    private String lang;
+    private String volume;
+    private String issue;
+    private String issn;
+    private String doi;
+    private List<String> url;
     private String abstracts;
-    private String content;
-    private String sourceLink;
-    private String authorName;
-    private Integer portalId;
-    private Integer citation;
-
 }

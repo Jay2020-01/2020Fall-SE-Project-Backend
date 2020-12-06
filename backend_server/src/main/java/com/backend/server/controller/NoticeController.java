@@ -2,6 +2,7 @@ package com.backend.server.controller;
 
 import com.backend.server.entity.Notice;
 import com.backend.server.entity.pojo.Message;
+import com.backend.server.entity.pojo.MessageList;
 import com.backend.server.entity.pojo.Result;
 import com.backend.server.service.NoticeService;
 import com.backend.server.service.UserService;
@@ -23,15 +24,32 @@ public class NoticeController {
     @Autowired
     private UserService userService;
 
+    private JwtTokenUtil util = new JwtTokenUtil();
+
     //私信
-    //拉取私信
-    @GetMapping("/get_message_list")
+
+    /**
+     * 拉取私信列表
+     * @param request
+     * @return
+     */
+    @GetMapping("/get_person_list")
     public Result getMessageList(HttpServletRequest request) {
-        JwtTokenUtil util = new JwtTokenUtil();
         Integer userId = util.getUserIdFromRequest(request);
         List<Notice> notices = noticeService.getMessageByUserId(userId);
-        return Result.create(200, "success", notices);
+        List<MessageList> personList = userService.getUserByNotice(notices, userId);
+        return Result.create(200, "success", personList);
     }
+
+
+    @GetMapping("/get_message_content")
+    public Result getMessageContent(HttpServletRequest request) {
+        Integer userId = util.getUserIdFromRequest(request);
+        List<Notice> notices = noticeService.getMessageByUserId(userId);
+
+        return Result.create(200, "success");
+    }
+
     //发送私信
     @PostMapping("/post_message")
     public Result sendMessage(@RequestBody Message message, HttpServletRequest request) {
