@@ -1,18 +1,17 @@
 package com.backend.server.entity.pojo;
 
-import com.backend.server.entity.Author;
-import com.backend.server.entity.Paper;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class PortalReturn {
-    List<Author> authors;
-    List<Paper> papers;
+    Map author;
+    List<Map> papers;
 
-    public PortalReturn(List<Author> authors, List<Paper> papers) {
-        this.authors = authors;
+    public PortalReturn(Map author, List<Map> papers) {
+        this.author = author;
         this.papers = papers;
     }
 }

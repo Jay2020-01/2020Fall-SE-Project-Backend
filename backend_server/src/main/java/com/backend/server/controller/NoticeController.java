@@ -8,10 +8,7 @@ import com.backend.server.service.NoticeService;
 import com.backend.server.service.UserService;
 import com.backend.server.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -36,6 +33,7 @@ public class NoticeController {
     @GetMapping("/get_person_list")
     public Result getMessageList(HttpServletRequest request) {
         Integer userId = util.getUserIdFromRequest(request);
+        //Integer userId = 1;
         List<Notice> notices = noticeService.getMessageByUserId(userId);
         List<MessageList> personList = userService.getUserByNotice(notices, userId);
         return Result.create(200, "success", personList);
@@ -43,11 +41,12 @@ public class NoticeController {
 
 
     @GetMapping("/get_message_content")
-    public Result getMessageContent(HttpServletRequest request) {
+    public Result getMessageContent(@RequestParam("target_user_id")Integer target, HttpServletRequest request) {
         Integer userId = util.getUserIdFromRequest(request);
-        List<Notice> notices = noticeService.getMessageByUserId(userId);
+        //Integer userId = 1;
+        List<Notice> notices = noticeService.getMessageByIds(userId, target);
 
-        return Result.create(200, "success");
+        return Result.create(200, "success", notices);
     }
 
     //发送私信
@@ -55,6 +54,7 @@ public class NoticeController {
     public Result sendMessage(@RequestBody Message message, HttpServletRequest request) {
         JwtTokenUtil util = new JwtTokenUtil();
         Integer userId = util.getUserIdFromRequest(request);
+        //Integer userId = 1;
         String notifierName = userService.getUserById(userId).getUserName();
         String receiverName = userService.getUserById(message.getTarget_user_id()).getUserName();
         noticeService.sendMessage(message, userId, notifierName, receiverName, 1);

@@ -3,14 +3,12 @@ package com.backend.server.service;
 import com.backend.server.entity.Notice;
 import com.backend.server.entity.pojo.Message;
 import com.backend.server.mapper.NoticeMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class NoticeService {
@@ -45,4 +43,10 @@ public class NoticeService {
     }
 
 
+    public List<Notice> getMessageByIds(Integer userId, Integer target) {
+        QueryWrapper<Notice> queryWrapper = new QueryWrapper<Notice>();
+        queryWrapper.in("notifier_id", Arrays.asList(userId, target)).in("receiver_id",Arrays.asList(userId, target) ).orderByDesc("create_time");
+        List<Notice> notices = noticeMapper.selectList(queryWrapper);
+        return notices;
+    }
 }

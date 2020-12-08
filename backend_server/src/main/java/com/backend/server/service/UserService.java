@@ -166,21 +166,23 @@ public class UserService {
     public List<MessageList> getUserByNotice(List<Notice> notices, Integer userId) {
         List<MessageList> messageLists = new ArrayList<>();
         for (Notice notice : notices) {
-            User user;
-            MessageList messageList = new MessageList();
-            if (notice.getNotifierId().equals(userId)) {
-                user = userMapper.selectById(notice.getReceiverId());
-                BeanUtils.copyProperties(user, messageList);
-                messageList.setNotice(notice);
-                messageLists.add(messageList);
-            }
-            else if (notice.getReceiverId().equals(userId)) {
-                user = userMapper.selectById(notice.getReceiverId());
-                BeanUtils.copyProperties(user, messageList);
-                messageList.setNotice(notice);
-                messageLists.add(messageList);
+            if (notice.getNotifierId().equals(userId) || notice.getReceiverId().equals(userId)) {
+                Integer targetId = null;
+                if (notice.getReceiverId().equals(userId)) targetId = notice.getNotifierId();
+                else targetId = notice.getReceiverId();
+                boolean flag = true;
+                for (MessageList message : messageLists) {
+                    if (message.getId().equals(targetId)) flag = false;
+                }
+                if (flag) {
+                    User user = userMapper.selectById(targetId);
+                    MessageList messageList = new MessageList();
+                    BeanUtils.copyProperties(user, messageList);
+                    messageLists.add(messageList);
+                }
             }
         }
         return messageLists;
     }
+
 }

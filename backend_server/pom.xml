@@ -104,11 +104,12 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
-        <!-- nacos -->
+        <!-- nacos
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
+        -->
         <!-- sentinel -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

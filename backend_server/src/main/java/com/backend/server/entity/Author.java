@@ -14,6 +14,8 @@ import java.util.List;
 public class Author implements Serializable {
 
     @Id
+    private Long _id;
+
     private String id;
     private String name;
     private Integer hIndex;
