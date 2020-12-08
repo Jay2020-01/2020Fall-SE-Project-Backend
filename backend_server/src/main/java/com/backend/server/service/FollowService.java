@@ -29,13 +29,11 @@ public class FollowService {
      * 添加关注
      * @param followingId 被关注者id
      */
-    public void addFollowing(Integer followingId) {
-        User user = userService.getUserByName(jwtTokenUtil.getUsernameFromRequest(request));
-
-        if(ExistFollow(user.getId(),followingId)) {
+    public void addFollowing(Integer followerId, Integer followingId) {
+        if(isFollowed(followerId,followingId)) {
             throw new RuntimeException("关注重复");
         }
-        Follow follow = new Follow(null,user.getId(),followingId,new Date());
+        Follow follow = new Follow(null,followerId,followingId,new Date());
         followMapper.insert(follow);
     }
 
@@ -44,7 +42,7 @@ public class FollowService {
      * @param followingId 被关注着id
      */
     public void removeFollower(Integer followingId) {
-        User user = userService.getUserByName(jwtTokenUtil.getUsernameFromRequest(request));
+        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("follower_id",user.getId());
         columnMap.put("following_id", followingId);
@@ -95,7 +93,7 @@ public class FollowService {
      * @param followerId 关注者id
      * @param followingId 被关注着id
      */
-    public boolean ExistFollow(Integer followerId,Integer followingId) {
+    public boolean isFollowed(Integer followerId,Integer followingId) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("follower_id",followerId);
         columnMap.put("following_id", followingId);
