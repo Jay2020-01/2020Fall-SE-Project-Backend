@@ -57,6 +57,7 @@ public class UserController {
         }
         try {
             Map<String, Object> map = userService.login(username, password);
+            if(map==null) return Result.create(StatusCode.LOGIN_ERROR, "登录失败，用户名或密码错误");
             return Result.create(StatusCode.OK, "登录成功", map);
         } catch (RuntimeException ue) {
             return Result.create(StatusCode.LOGIN_ERROR, "登录失败，用户名或密码错误");

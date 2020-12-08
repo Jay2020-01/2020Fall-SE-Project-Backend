@@ -1,5 +1,6 @@
 package com.backend.server.service;
 
+import com.backend.server.dao.PaperDaoImp;
 import com.backend.server.entity.Favor;
 import com.backend.server.entity.Paper;
 import com.backend.server.entity.User;
@@ -21,18 +22,20 @@ public class FavorService {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private HttpServletRequest request;
+    @Autowired
+    private PaperDaoImp paperDaoImp;
 
     /**
      * 获取当前用户收藏列表
      */
     public List<Paper> getFavorList(){
-        User user = userService.getUserByName(jwtTokenUtil.getUsernameFromRequest(request));
+        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("user_id",user.getId());
         List<Favor> ids = favorMapper.selectByMap(columnMap);
         List<Paper> paperList = new ArrayList<>();
         for(Favor f:ids) {
-//            paperService.getPaperById(f.getPaperId());
+            paperList.add(paperDaoImp.findPaperById(f.getPaperId()));
         }
         return paperList;
     }
@@ -42,8 +45,7 @@ public class FavorService {
      * @param paperId 论文id
      * @param userId 用户id
      */
-    public void addFavor(Integer paperId, Integer userId){
-//        String title = paperService.getPaperById(paperId).getTitle();
+    public void addFavor(String paperId, Integer userId){
         Favor favor = new Favor(null, userId, paperId, new Date());
         favorMapper.insert(favor);
     }
@@ -53,7 +55,7 @@ public class FavorService {
      * @param paperId 论文id
      * @param userId 用户id
      */
-    public void removeFavor(Integer paperId, Integer userId){
+    public void removeFavor(String paperId, Integer userId){
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("paper_id",paperId);
         columnMap.put("user_id", userId);
@@ -65,7 +67,7 @@ public class FavorService {
      * @param paperId 论文id
      * @param userId 用户id
      */
-    public boolean isFavored(Integer paperId, Integer userId) {
+    public boolean isFavored(String paperId, Integer userId) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("paper_id",paperId);
         columnMap.put("user_id", userId);

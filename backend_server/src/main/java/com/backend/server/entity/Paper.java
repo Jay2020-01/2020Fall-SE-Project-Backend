@@ -13,7 +13,8 @@ import java.util.List;
 public class Paper {
 
     @Id
-    private Integer id;
+    private String _id;
+    private String id;
     private String title;
     private List<author> authors;
     private venue venue;

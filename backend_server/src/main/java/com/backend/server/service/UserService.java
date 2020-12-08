@@ -46,7 +46,7 @@ public class UserService {
             return createToken(username,userInfoStr,role);
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("系统异常! " + e);
+            System.out.println("系统登录异常! " + e);
             return null;
         }
     }
@@ -155,12 +155,20 @@ public class UserService {
     public User getUserByName(String userName) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("user_name", userName);
-        return userMapper.selectByMap(columnMap).get(0);
+        try {
+            return userMapper.selectByMap(columnMap).get(0);
+        }catch (Exception e){
+            return null;
+        }
     }
     public User getUserByMail(String mail) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("mail", mail);
-        return userMapper.selectByMap(columnMap).get(0);
+        try {
+            return userMapper.selectByMap(columnMap).get(0);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     public List<MessageList> getUserByNotice(List<Notice> notices, Integer userId) {

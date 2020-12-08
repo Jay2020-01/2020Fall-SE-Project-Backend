@@ -57,12 +57,11 @@ public class FavorController {
 
     @PostMapping("/collect_}")
     public Result addFavor(String paper_id){
-        Integer paperId = Integer.parseInt(paper_id);
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
-            if(favorService.isFavored(paperId,user.getId()))
+            if(favorService.isFavored(paper_id,user.getId()))
                 return Result.create(StatusCode.OK,"学术成果已收藏");
-            favorService.addFavor(paperId,user.getId());
+            favorService.addFavor(paper_id,user.getId());
             return Result.create(StatusCode.OK,"收藏成功");
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, e.getMessage());
@@ -70,7 +69,7 @@ public class FavorController {
     }
 
     @PostMapping("/remove/{paperId}")
-    public Result removeFavor(@PathVariable Integer paperId){
+    public Result removeFavor(@PathVariable String paperId){
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
             favorService.removeFavor(paperId,user.getId());
@@ -81,7 +80,7 @@ public class FavorController {
     }
 
     @GetMapping("/isFavor/{paperId}")
-    public Result isFavor(@PathVariable Integer paperId){
+    public Result isFavor(@PathVariable String paperId){
         List<Paper> paperList = favorService.getFavorList();
         for(Paper p: paperList){
             if(p.getId().equals(paperId))

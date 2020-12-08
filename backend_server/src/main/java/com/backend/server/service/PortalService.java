@@ -21,7 +21,6 @@ public class PortalService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-
     public Portal selectById(Integer portalId) {
         Portal portal = portalMapper.selectById(portalId);
         return portal;

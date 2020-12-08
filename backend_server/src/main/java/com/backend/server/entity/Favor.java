@@ -16,7 +16,7 @@ public class Favor {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Integer userId;
-    private Integer paperId;
+    private String paperId;
     private Date favorTime;
 
 }
