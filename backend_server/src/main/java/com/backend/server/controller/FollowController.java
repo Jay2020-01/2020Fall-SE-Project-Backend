@@ -1,14 +1,16 @@
 package com.backend.server.controller;
 
+import com.backend.server.entity.User;
 import com.backend.server.entity.pojo.PageResult;
 import com.backend.server.entity.pojo.Result;
 import com.backend.server.entity.pojo.StatusCode;
-import com.backend.server.entity.User;
 import com.backend.server.service.FollowService;
 import com.backend.server.service.UserService;
+import com.backend.server.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -18,15 +20,21 @@ public class FollowController {
     private FollowService followService;
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private HttpServletRequest request;
     /**
      * 关注用户
      */
     @PostMapping("/follow_scholar")
     public Result newFollow(String person_id) {
-        Integer followingId  = userService.getUserById(Integer.parseInt(person_id)).getId();
+        Integer followingId  = Integer.parseInt(person_id);
+        Integer followerId = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request)).getId();
         try {
-            followService.addFollowing(followingId);
+            if(followService.isFollowed(followerId,followingId))
+                return Result.create(StatusCode.OK,"已关注该学者");
+            followService.addFollowing(followerId,followingId);
             return Result.create(StatusCode.OK, "关注成功");
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, e.getMessage());

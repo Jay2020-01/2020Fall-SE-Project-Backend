@@ -168,7 +168,7 @@ public class UserController {
 
     /*=============================================================*/
 
-    @GetMapping("/getUser")
+    @GetMapping("/my_info")
     public Result getCurUser(){
         User user = userMapper.selectById(jwtTokenUtil.getUserIdFromRequest(request));
         return Result.create(StatusCode.OK, "获取成功",user);
@@ -183,5 +183,7 @@ public class UserController {
         Integer uid = userService.getUserByName(userName).getId();
         return Result.create(StatusCode.OK,"成功",uid);
     }
+
+
 
 }

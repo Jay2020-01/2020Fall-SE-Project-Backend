@@ -73,8 +73,6 @@ public class FavorController {
     public Result removeFavor(@PathVariable Integer paperId){
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
-            if(!favorService.isFavored(paperId,user.getId()))
-                return Result.create(StatusCode.OK,"学术成果未收藏");
             favorService.removeFavor(paperId,user.getId());
             return Result.create(StatusCode.OK,"取消收藏成功");
         } catch (RuntimeException e) {
