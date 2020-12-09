@@ -30,5 +30,4 @@ public class AuthorDaoImp implements AuthorDao {
 		return mongoTemplate.find(query, Author.class);
 	}
 
-
 }
