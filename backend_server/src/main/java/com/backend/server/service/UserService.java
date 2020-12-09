@@ -39,7 +39,7 @@ public class UserService {
             System.out.println("dbUser = " + dbUser);
             if (null == dbUser || !password.equals(dbUser.getPassword())) {
                 System.out.println("用户密码错误");
-                throw new RuntimeException("用户名或密码错误");
+                return null;
             }
             String role = dbUser.getIsAdmin()==1 ? "ADMIN" : "USER";
             String userInfoStr = dbUser.getId() + ";;" + dbUser.getUserName() + ";;" + dbUser.getIsAdmin();
@@ -74,7 +74,7 @@ public class UserService {
         userToAdd.setUserName(username);
         userToAdd.setIsAdmin(0);
         userMapper.insert(userToAdd);
-        //TODO 直接自动登录？？返回TOKEN
+        //直接自动登录？？返回TOKEN
         Integer id = getUserByName(username).getId();
         String userInfoStr = id + ";;" + username + ";;" + 0;
         return createToken(username,userInfoStr,"USER");
@@ -115,11 +115,12 @@ public class UserService {
      * 修改密码
      * @param newPassword 新密码
      */
-    public void updatePassword(String newPassword) {
-
+    public Boolean updatePassword(String oldPassword,String newPassword) {
         User user = userMapper.selectById(jwtTokenUtil.getUserIdFromRequest(request));
+        if(!user.getPassword().equals(oldPassword)) return false;
         user.setPassword(newPassword);
         userMapper.updateById(user);
+        return true;
     }
 
 

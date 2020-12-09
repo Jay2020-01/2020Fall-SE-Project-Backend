@@ -14,7 +14,7 @@ public class Paper {
 
     @Id
     private String _id;
-    private String id;
+    private String pid;
     private String title;
     private List<author> authors;
     private venue venue;

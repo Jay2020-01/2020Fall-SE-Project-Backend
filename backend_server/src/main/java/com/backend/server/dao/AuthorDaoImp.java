@@ -1,6 +1,6 @@
 package com.backend.server.dao;
 
-import com.backend.server.entity.Paper;
+import com.backend.server.entity.Author;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -11,24 +11,23 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @Component
-public class PaperDaoImp implements PaperDao {
+public class AuthorDaoImp implements AuthorDao {
 
 	@Resource
 	private MongoTemplate mongoTemplate;
 
 
 	@Override
-	public Paper findPaperById(String id) {
-		Query query = new Query(Criteria.where("pid").is(id));
-		return mongoTemplate.findOne(query, Paper.class);
+	public Author findAuthorById(String id) {
+		Query query = new Query(Criteria.where("aid").is(id));
+		return mongoTemplate.findOne(query, Author.class);
 	}
-
 	@Override
-	public List<Paper> Demo(String field, String context) {
+	public List<Author> Demo(String field, String context) {
 		Pattern pattern = Pattern.compile(".*?" + context + ".*");
 		Query query = new Query();
 		query.addCriteria(Criteria.where(field).regex(pattern));
-		return mongoTemplate.find(query, Paper.class);
+		return mongoTemplate.find(query, Author.class);
 	}
 
 

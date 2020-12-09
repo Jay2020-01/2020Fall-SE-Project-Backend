@@ -1,5 +1,7 @@
 package com.backend.server.service;
 
+import com.backend.server.dao.AuthorDaoImp;
+import com.backend.server.entity.Author;
 import com.backend.server.entity.Follow;
 import com.backend.server.entity.User;
 import com.backend.server.utils.JwtTokenUtil;
@@ -21,7 +23,8 @@ public class FollowService {
     private FollowMapper followMapper;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
+    @Autowired
+    private AuthorDaoImp authorDaoImp;
     @Autowired
     private HttpServletRequest request;
 
@@ -29,7 +32,7 @@ public class FollowService {
      * 添加关注
      * @param followingId 被关注者id
      */
-    public void addFollowing(Integer followerId, Integer followingId) {
+    public void addFollowing(Integer followerId, String followingId) {
         if(isFollowed(followerId,followingId)) {
             throw new RuntimeException("关注重复");
         }
@@ -41,7 +44,7 @@ public class FollowService {
      * 移除关注
      * @param followingId 被关注着id
      */
-    public void removeFollower(Integer followingId) {
+    public void removeFollower(String followingId) {
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("follower_id",user.getId());
@@ -52,16 +55,18 @@ public class FollowService {
     /**
      * 获取当前用户关注列表
      */
-    public List<User> getFollowList(){
-        User user = userService.getUserByName(jwtTokenUtil.getUsernameFromRequest(request));
+    public List<Author> getFollowList(){
+        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
+//        User user = userService.getUserById(1);
         Map<String, Object> columnMap = new HashMap<>();
-        columnMap.put("following_id",user.getId());
+        columnMap.put("follower_id",user.getId());
         List<Follow> ids = followMapper.selectByMap(columnMap);
-        List<User> users = new ArrayList<>();
+        System.out.println("ids = " + ids);
+        List<Author> authors = new ArrayList<>();
         for(Follow f:ids) {
-            users.add(userMapper.selectById(f.getFollowerId()));
+            authors.add(authorDaoImp.findAuthorById(f.getFollowingId()));
         }
-        return users;
+        return authors;
     }
 
     /**
@@ -93,7 +98,7 @@ public class FollowService {
      * @param followerId 关注者id
      * @param followingId 被关注着id
      */
-    public boolean isFollowed(Integer followerId,Integer followingId) {
+    public boolean isFollowed(Integer followerId,String followingId) {
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("follower_id",followerId);
         columnMap.put("following_id", followingId);

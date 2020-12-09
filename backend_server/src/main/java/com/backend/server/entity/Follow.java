@@ -16,7 +16,7 @@ public class Follow {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
     private Integer followerId;
-    private Integer followingId;
+    private String followingId;
     private Date followTime;
 
 }

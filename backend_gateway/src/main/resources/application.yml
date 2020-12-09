@@ -6,7 +6,8 @@ ignore:
     - /user/demo
     - /user/login
     - /user/register
-    - /user/checkToken
+    - /favor/my_collection
+    - /follow/my_following
 
 spring:
   cloud:

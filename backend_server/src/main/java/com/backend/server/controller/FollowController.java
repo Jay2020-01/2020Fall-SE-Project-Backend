@@ -1,7 +1,6 @@
 package com.backend.server.controller;
 
-import com.backend.server.entity.User;
-import com.backend.server.entity.pojo.PageResult;
+import com.backend.server.entity.Author;
 import com.backend.server.entity.pojo.Result;
 import com.backend.server.entity.pojo.StatusCode;
 import com.backend.server.service.FollowService;
@@ -25,16 +24,24 @@ public class FollowController {
     @Autowired
     private HttpServletRequest request;
     /**
+     * 查询关注列表
+     */
+    @GetMapping("/my_following")
+    public Result getFollowList() {
+        List<Author> result = followService.getFollowList();
+        return Result.create(StatusCode.OK, "查询成功", result);
+    }
+
+    /**
      * 关注用户
      */
     @PostMapping("/follow_scholar")
     public Result newFollow(String person_id) {
-        Integer followingId  = Integer.parseInt(person_id);
         Integer followerId = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request)).getId();
         try {
-            if(followService.isFollowed(followerId,followingId))
+            if(followService.isFollowed(followerId,person_id))
                 return Result.create(StatusCode.OK,"已关注该学者");
-            followService.addFollowing(followerId,followingId);
+            followService.addFollowing(followerId,person_id);
             return Result.create(StatusCode.OK, "关注成功");
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, e.getMessage());
@@ -44,28 +51,17 @@ public class FollowController {
     /**
      * 移除关注
      */
-    @DeleteMapping("/remove/{userName}")
-    public Result removeFollow(@PathVariable String userName) {
-        Integer followingId  = userService.getUserByName(userName).getId();
+    @DeleteMapping("/remove_scholar")
+    public Result removeFollow(String person_id) {
         try{
-            followService.removeFollower(followingId);
+            followService.removeFollower(person_id);
             return Result.create(StatusCode.OK, "移除成功");
         }catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, e.getMessage());
         }
     }
 
-    /**
-     * 查询关注列表 TODO
-     */
-    @GetMapping("/myFollowing")
-    public Result getFollowList() {
-
-        List<User> res = followService.getFollowList();
-        PageResult<User> result = new PageResult<>((long) res.size(),res);
-
-        return Result.create(StatusCode.OK, "查询成功", result);
-    }
+    // ===============================================
 
     /**
      * 查询用户粉丝数
@@ -88,13 +84,13 @@ public class FollowController {
     }
 
     /**
-     * 是否关注此Name用户 TODO
+     * 是否关注此id用户 TODO
      */
-    @GetMapping("/isFollow/{userName}")
-    public Result isFollow(@PathVariable String userName){
-        List<User> res = followService.getFollowList();
-        for(User user: res){
-            if(user.getUserName().equals(userName))
+    @GetMapping("/isFollow/{userId}")
+    public Result isFollow(@PathVariable Integer userId){
+        List<Author> res = followService.getFollowList();
+        for(Author author: res){
+            if(author.getUserId().equals(userId))
                 return Result.create(StatusCode.OK, "查询成功", true);
         }
         return Result.create(StatusCode.OK, "查询成功", false);

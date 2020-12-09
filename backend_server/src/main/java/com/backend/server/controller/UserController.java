@@ -141,10 +141,11 @@ public class UserController {
      * 修改密码
      */
     @PostMapping("/change_password")
-    public Result updatePassword(String newPassword) {
+    public Result updatePassword(String old_pwd, String new_pwd) {
         try {
-            userService.updatePassword(newPassword);
-            return Result.create(StatusCode.OK, "修改密码成功");
+            if(userService.updatePassword(old_pwd,new_pwd))
+                return Result.create(StatusCode.OK, "修改密码成功");
+            else return Result.create(StatusCode.ERROR, "旧密码错误");
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, e.getMessage());
         }
@@ -156,6 +157,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping(value = { "/checkToken" }, method = RequestMethod.POST)
     public int checkToken(@RequestParam(value = "authToken") String authToken) {
+        System.out.println("Check authToken = " + authToken);
         if (JwtTokenUtil.isNotBlank(authToken)) {
             try {
                 boolean flag = jwtTokenUtil.isTokenExpired(authToken);
@@ -184,7 +186,5 @@ public class UserController {
         Integer uid = userService.getUserByName(userName).getId();
         return Result.create(StatusCode.OK,"成功",uid);
     }
-
-
 
 }
