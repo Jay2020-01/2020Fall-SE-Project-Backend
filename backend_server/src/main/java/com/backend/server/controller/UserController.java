@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {

@@ -19,14 +19,21 @@ public class PaperController {
 	@Autowired
 	PaperService paperService;
 
-	@GetMapping("/id/{paperId}")
+	@GetMapping("/ping")
+	public Result Ping() {
+		System.out.println("====== Ping Success =====");
+		return Result.create(StatusCode.OK, "查询成功", "SUCCESS");
+	}
+
 	/**
 	 * 按 id (pid) 查询文章
-	 * 
+	 *
 	 * @param paperId
 	 * @return
 	 */
+	@GetMapping("/id/{paperId}")
 	public Result getPaperById(@PathVariable String paperId) {
+		System.out.println("====== BEGIN FIND =====");
 		Paper p = paperService.findPaperByPid(paperId);
 		return Result.create(StatusCode.OK, "查询成功", p);
 	}
@@ -34,7 +41,7 @@ public class PaperController {
 	/**
 	 * 按标题查询，默认按匹配程度排序
 	 * 效率不错
-	 * 
+	 *
 	 * @param text     查询内容
 	 * @param pageNum  页码，从 0 开始
 	 * @param pageSize 每页个数，必须 > 0，建议不超过 30
@@ -42,17 +49,18 @@ public class PaperController {
 	 */
 	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
 	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
+		System.out.println("===== BEGIN SEARCH =====");
 		Page<Paper> page = paperService.findPaperByTitle(text, pageNum, pageSize);
 		if (page != null)
 			return Result.create(StatusCode.OK, "查询成功", page);
-		else 
+		else
 			return Result.create(StatusCode.NOTFOUND, "文章不存在");
 	}
 
 	/**
 	 * 按 keyword 查询，目前最好按单个单词查，比如 cosmology 这种
 	 * 然后他现在有点慢，白天研究一下
-	 * 
+	 *
 	 * @param text
 	 * @param pageNum
 	 * @param pageSize
