@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RestController
 @RequestMapping
+@RestController("/portal")
 public class PortalController {
     @Autowired
     private AuthorService authorService;

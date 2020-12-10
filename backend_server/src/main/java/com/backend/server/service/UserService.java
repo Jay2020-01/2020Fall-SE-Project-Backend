@@ -36,7 +36,7 @@ public class UserService {
     public Map<String, Object> login(String username, String password) throws RuntimeException {
         try {
             User dbUser = this.getUserByName(username);
-            System.out.println("dbUser = " + dbUser);
+            System.out.println("dbUser = " + dbUser.getUserName());
             if (null == dbUser || !password.equals(dbUser.getPassword())) {
                 System.out.println("用户密码错误");
                 return null;
@@ -45,8 +45,8 @@ public class UserService {
             String userInfoStr = dbUser.getId() + ";;" + dbUser.getUserName() + ";;" + dbUser.getIsAdmin();
             return createToken(username,userInfoStr,role);
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("系统登录异常! " + e);
+            e.printStackTrace();
             return null;
         }
     }
@@ -59,9 +59,6 @@ public class UserService {
      * @return 用户名、角色、token
      */
     public Map<String, Object> register(String username,String email,String password) throws RuntimeException {
-        // if (!checkMailCode(mail, mailCode)) {
-        //     throw new RuntimeException("验证码错误");
-        // }
         if (getUserByName(username) != null) {
             throw new RuntimeException("用户名已存在");
         }
@@ -74,7 +71,6 @@ public class UserService {
         userToAdd.setUserName(username);
         userToAdd.setIsAdmin(0);
         userMapper.insert(userToAdd);
-        //直接自动登录？？返回TOKEN
         Integer id = getUserByName(username).getId();
         String userInfoStr = id + ";;" + username + ";;" + 0;
         return createToken(username,userInfoStr,"USER");
@@ -97,7 +93,7 @@ public class UserService {
         if(gender!=null) user.setGender(gender);
         if(occupation!=null) user.setOccupation(occupation);
         if(institution!=null) user.setInstitution(institution);
-        // TODO 更新token、关注表
+        // 存在token中name更新不及时的隐患
         userMapper.updateById(user);
     }
 
@@ -132,7 +128,7 @@ public class UserService {
     public Map<String, Object> createToken(String username, String userInfoStr,String role) {
         final String randomKey = jwtTokenUtil.getRandomKey();
         final String token = jwtTokenUtil.generateToken(userInfoStr, randomKey);
-        System.out.println("token = " + token);
+//        System.out.println("token = " + token);
         Map<String, Object> map = new HashMap<>();
         map.put("name", username);
         map.put("roles", role);
@@ -140,15 +136,6 @@ public class UserService {
         return map;
     }
 
-    /**
-     * 从redis中提取验证码并校验
-     * @param mail 邮箱
-     * @param code 验证码
-     */
-    public boolean checkMailCode(String mail, String code) {
-        String mailCode = redisTemplate.opsForValue().get("MAIL_" + mail);
-        return code.equals(mailCode);
-    }
 
     public User getUserById(Integer userId){
         return userMapper.selectById(userId);

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.backend</groupId>
     <artifactId>backend_gateway</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>gateway</name>
     <description>网关</description>
 

@@ -57,7 +57,6 @@ public class FollowService {
      */
     public List<Author> getFollowList(){
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
-//        User user = userService.getUserById(1);
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("follower_id",user.getId());
         List<Follow> ids = followMapper.selectByMap(columnMap);

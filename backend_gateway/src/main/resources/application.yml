@@ -15,18 +15,6 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     gateway:
-      # 跨域
-      globalcors:
-        corsConfigurations:
-          '[/**]':
-            allowedHeaders: "*"
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-                POST
-                DELETE
-                PUT
-                OPTION
       routes:
         - id: backend-search
           uri: lb://backend-search
@@ -35,4 +23,4 @@ spring:
         - id: backend-server
           uri: lb://backend-server
           predicates:
-            - Path=/favor/**, /user/**, /follow/**, /portal/**, /ajax/**
+            - Path=/favor/**, /user/**, /follow/**, /portal/**, /notice/**

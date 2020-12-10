@@ -30,13 +30,11 @@ public class FavorService {
      */
     public List<Paper> getFavorList(){
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
-//        User user = userService.getUserById(1);
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("user_id",user.getId());
         List<Favor> ids = favorMapper.selectByMap(columnMap);
         List<Paper> paperList = new ArrayList<>();
         for(Favor f:ids) {
-//            paperList.add(paperDaoImp.Demo("id",f.getPaperId()).get(0));
             paperList.add(paperDaoImp.findPaperById(f.getPaperId()));
         }
         return paperList;

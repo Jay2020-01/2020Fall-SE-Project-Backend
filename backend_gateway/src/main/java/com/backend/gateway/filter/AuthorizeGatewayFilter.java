@@ -36,8 +36,7 @@ public class AuthorizeGatewayFilter implements GlobalFilter, Ordered {
         String token = request.getHeaders().getFirst("Authorization");
         String path = request.getPath().value();
         Map<String, Object> map = new HashMap<>();
-        System.out.println("请求网关地址：" + path);
-//        System.out.println("token:"+token);
+        System.out.println("请求后端路径：" + path);
         try {
             if (isIgnoreHttpUrls(path)) {
                 return chain.filter(exchange);
