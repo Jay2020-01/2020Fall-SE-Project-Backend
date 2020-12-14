@@ -37,7 +37,6 @@ public class SearchController {
 		Paper p = searchService.findPaperByPid(paperId);
 		return Result.create(StatusCode.OK, "查询成功", p);
 	}
-
 //	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
 //	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
 //		System.out.println("===== BEGIN SEARCH =====");

@@ -35,7 +35,7 @@ public class FavorController {
         }
     }
 
-    @PostMapping("/collect_paper}")
+    @PostMapping("/collect_paper")
     public Result addFavor(String paper_id){
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
