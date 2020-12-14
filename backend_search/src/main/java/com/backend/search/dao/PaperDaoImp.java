@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 public class PaperDaoImp implements PaperDao {
 
 	private final int MAX_COUNT = 1000;
-
+	
 	@Resource
 	private MongoTemplate mongoTemplate;
 
@@ -47,8 +47,10 @@ public class PaperDaoImp implements PaperDao {
 		Query query = new Query();
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
-		Pattern pattern = Pattern.compile(".*?" + name + ".*", Pattern.CASE_INSENSITIVE);
-		query.addCriteria(Criteria.where("authors.name").regex(pattern));
+		//Pattern pattern = Pattern.compile(".*?" + name + ".*", Pattern.CASE_INSENSITIVE);
+		//query.addCriteria(Criteria.where("authors.name").regex(pattern));
+
+		query.addCriteria(Criteria.where("authors.name").is(name));
 
 		Long count;
 		if (havePaper(query)) count = 1000L;
@@ -65,7 +67,7 @@ public class PaperDaoImp implements PaperDao {
 		if (id.equals("null")) {
 			return null;
 		}
-
+		
 		Query query = new Query();
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
@@ -80,21 +82,21 @@ public class PaperDaoImp implements PaperDao {
 
 		return page;
 	}
-
-	@Override
+	
+	/*@Override
 	public Page<Paper> findPaperByTitle(String title, Integer pageNum, Integer pageSize) {
-		TextQuery query = new TextQuery(title);
+		TextQuery query = new TextQuery(title).sortByScore();
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-
+		
 		Long count;
 		if (havePaper(query)) count = 1000L;
 		else count = mongoTemplate.count(query, Paper.class);
-
+		
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
 		return page;
-	}
-
+	}*/
+	
 	/*
 	@Override
 	public Page<Paper> findPaperByPlainText(String context, Integer pageNum, Integer pageSize) {
@@ -102,28 +104,27 @@ public class PaperDaoImp implements PaperDao {
 		Query query = new Query();
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 		Criteria criteria = new Criteria();
-
+		
 		for (String str : text) {
 			Pattern pattern = Pattern.compile(".*?" + str + ".*");
 			query.addCriteria(Criteria.where("title").regex(pattern).and);
 		}
-
+		
 		return null;
 	}
 	*/
-
+	
 	@Override
-	public Page<Paper> findPaperByKeywords(String keywords, Integer pageNum, Integer pageSize) {
-		String[] words = keywords.split(" ");
-		Query query = new Query();
+	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize) {
+
+		TextQuery query = new TextQuery(input);
+		if(start_year!=null&&end_year!=null)
+			query.addCriteria(Criteria.where("year").gte(start_year).lte(end_year));
+		else if(end_year!=null)
+			query.addCriteria(Criteria.where("year").lte(end_year));
+		else if(start_year!=null)
+			query.addCriteria(Criteria.where("year").gte(end_year));
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Criteria criteria = new Criteria();
-
-		for (String word : words) {
-			criteria.and("keywords").is(word);
-		}
-
-		query = new Query(criteria);
 
 		Long count;
 		if (havePaper(query)) count = 1000L;
@@ -131,9 +132,29 @@ public class PaperDaoImp implements PaperDao {
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
-
 		return page;
 	}
+	/*public Page<Paper> findPaperByKeywords(String keywords, Integer pageNum, Integer pageSize) {
+		String[] words = keywords.split(" ");
+		Query query = new Query();
+		Pageable pageable = PageRequest.of(pageNum, pageSize);
+		Criteria criteria = new Criteria();
+		
+		for (String word : words) {
+			criteria.and("keywords").is(word);
+		}
+		
+		query = new Query(criteria);
+		
+		Long count;
+		if (havePaper(query)) count = 1000L;
+		else count = mongoTemplate.count(query, Paper.class);
+		
+		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
+		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
+		
+		return page;
+	}*/
 
 	@Override
 	public List<Paper> Demo(String field, String context) {
@@ -142,9 +163,8 @@ public class PaperDaoImp implements PaperDao {
 		query.addCriteria(Criteria.where(field).regex(pattern));
 		return mongoTemplate.find(query, Paper.class);
 	}
-
+	
 	private boolean havePaper(Query query) {
-//		return true;
 		query.skip(MAX_COUNT).limit(1);
 		List<Paper> list = mongoTemplate.find(query, Paper.class);
 		query.skip(0).limit(0);

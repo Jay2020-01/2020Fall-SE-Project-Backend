@@ -54,21 +54,21 @@ class PaperDaoTest {
 		mongoTemplate.indexOps(Paper.class).ensureIndex(definition);
 	}
 	
-	@Test
-	void test4() {
-		System.out.println("starting");
-		Page<Paper> page = paperDao.findPaperByKeywords("cosmology", 0, 5);
-		System.out.println(page.getContent());
-		System.out.println(page.getTotalElements());
-		System.out.println("end");
-	}
+//	@Test
+//	void test4() {
+//		System.out.println("starting");
+//		Page<Paper> page = paperDao.findPaperByKeywords("cosmology", 0, 5);
+//		System.out.println(page.getContent());
+//		System.out.println(page.getTotalElements());
+//		System.out.println("end");
+//	}
 	
-	@Test
+	/*@Test
 	void test5() {
 		System.out.println("starting");
 		Page<Paper> page = paperDao.findPaperByTitle("algorithm", 0, 5);
 		System.out.println(page.getContent().size());
 		System.out.println(page.getTotalElements());
 		System.out.println("end");
-	}
+	}*/
 } 
