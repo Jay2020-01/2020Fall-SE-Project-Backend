@@ -121,7 +121,7 @@ public class PaperDaoImp implements PaperDao {
 		else if(end_year!=null)
 			query.addCriteria(Criteria.where("year").lte(end_year));
 		else if(start_year!=null)
-			query.addCriteria(Criteria.where("year").gte(end_year));
+			query.addCriteria(Criteria.where("year").gte(start_year));
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
 		Long count;
