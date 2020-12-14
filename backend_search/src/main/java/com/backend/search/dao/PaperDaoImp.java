@@ -1,5 +1,6 @@
 package com.backend.search.dao;
 
+import com.backend.search.entity.HotAuthor;
 import com.backend.search.entity.Paper;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -93,6 +94,24 @@ public class PaperDaoImp implements PaperDao {
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
 		return page;
+	}
+
+	@Override
+	public List<Paper> findHotPaper(){
+		List<Paper> list = mongoTemplate.findAll(Paper.class,"c_h_paper");
+		return list;
+	}
+
+	@Override
+	public List<HotAuthor> findHotAuthorByH(){
+		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class,"h_h_author");
+		return list;
+	}
+
+	@Override
+	public List<HotAuthor> findHotAuthorByC(){
+		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class,"c_h_author");
+		return list;
 	}
 
 	/*

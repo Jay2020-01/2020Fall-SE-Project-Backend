@@ -1,5 +1,6 @@
 package com.backend.search.dao;
 
+import com.backend.search.entity.HotAuthor;
 import com.backend.search.entity.Paper;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
@@ -25,4 +26,10 @@ public interface PaperDao {
 	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize);
 	
 	List<Paper> Demo(String field, String context);
+
+    List<Paper> findHotPaper();
+
+	List<HotAuthor> findHotAuthorByH();
+
+	List<HotAuthor> findHotAuthorByC();
 }

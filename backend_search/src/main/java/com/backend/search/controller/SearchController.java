@@ -1,5 +1,6 @@
 package com.backend.search.controller;
 
+import com.backend.search.entity.HotAuthor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +12,8 @@ import com.backend.search.entity.Paper;
 import com.backend.search.entity.pojo.Result;
 import com.backend.search.entity.pojo.StatusCode;
 import com.backend.search.service.SearchService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("search")
@@ -36,6 +39,24 @@ public class SearchController {
 		System.out.println("====== BEGIN FIND =====");
 		Paper p = searchService.findPaperByPid(paperId);
 		return Result.create(StatusCode.OK, "查询成功", p);
+	}
+
+	@GetMapping("/index/hotPaper")
+	public Result getHotPaper() {
+		List<Paper> p = searchService.findHotPaper();
+		return Result.create(StatusCode.OK, "查询成功", p);
+	}
+
+	@GetMapping("/index/hotAuthorByC")
+	public Result getHotAuthorByC() {
+		List<HotAuthor> a = searchService.findHotAuthorByC();
+		return Result.create(StatusCode.OK, "查询成功", a);
+	}
+
+	@GetMapping("/index/hotAuthorByH")
+	public Result getHotAuthorByH() {
+		List<HotAuthor> a = searchService.findHotAuthorByH();
+		return Result.create(StatusCode.OK, "查询成功", a);
 	}
 //	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
 //	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
