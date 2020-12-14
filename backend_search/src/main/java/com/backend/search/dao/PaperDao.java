@@ -19,11 +19,11 @@ public interface PaperDao {
 
 	Page<Paper> findPaperByAuthorId(String id, Integer pageNum, Integer pageSize);
 	
-//	Page<Paper> findPaperByTitle(String title, Integer pageNum, Integer pageSize);
+	Page<Paper> findPaperByTitle(String title, Integer pageNum, Integer pageSize);
 
 //	Page<Paper> findPaperByPlainText(String context, Integer pageNum, Integer pageSize);
-
-	Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize);
+	
+	Page<Paper> findPaperByKeywords(String keywords, Integer pageNum, Integer pageSize);
 	
 	List<Paper> Demo(String field, String context);
 }
