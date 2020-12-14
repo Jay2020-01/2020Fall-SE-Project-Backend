@@ -67,7 +67,7 @@ public class SearchController {
 	 * @param pageSize
 	 * @return
 	 */
-	@GetMapping("keyword/{text}/{start_year}/{end_year}/{pageNum}/{pageSize}")
+	@GetMapping("/keyword/{text}/{start_year}/{end_year}/{pageNum}/{pageSize}")
 	public Result findPaperBykeyword(@PathVariable String text,@PathVariable Integer start_year,@PathVariable Integer end_year,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
 		Page<Paper> page = searchService.findPaperByKeywords(text,start_year,end_year, pageNum, pageSize);
 		return Result.create(StatusCode.OK, "查询成功", page);
