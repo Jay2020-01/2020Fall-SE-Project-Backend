@@ -38,15 +38,6 @@ public class SearchController {
 		return Result.create(StatusCode.OK, "查询成功", p);
 	}
 
-	/**
-	 * 按标题查询，默认按匹配程度排序
-	 * 效率不错
-	 *
-	 * @param text     查询内容
-	 * @param pageNum  页码，从 0 开始
-	 * @param pageSize 每页个数，必须 > 0，建议不超过 30
-	 * @return
-	 */
 //	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
 //	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
 //		System.out.println("===== BEGIN SEARCH =====");
