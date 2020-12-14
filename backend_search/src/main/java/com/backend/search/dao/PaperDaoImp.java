@@ -47,9 +47,9 @@ public class PaperDaoImp implements PaperDao {
 		Query query = new Query();
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
-		Pattern pattern = Pattern.compile(".*?" + name + ".*", Pattern.CASE_INSENSITIVE);
-		query.addCriteria(Criteria.where("authors.name").regex(pattern));
-
+		//Pattern pattern = Pattern.compile(".*?" + name + ".*", Pattern.CASE_INSENSITIVE);
+		//query.addCriteria(Criteria.where("authors.name").regex(pattern));
+		query.addCriteria(Criteria.where("authors.name").is(name));
 		Long count;
 		if (havePaper(query)) count = 1000L;
 		else count = mongoTemplate.count(query, Paper.class);
@@ -113,17 +113,16 @@ public class PaperDaoImp implements PaperDao {
 	*/
 
 	@Override
-	public Page<Paper> findPaperByKeywords(String keywords, Integer pageNum, Integer pageSize) {
-		String[] words = keywords.split(" ");
-		Query query = new Query();
+	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize) {
+
+		TextQuery query = new TextQuery(input);
+		if(start_year!=null&&end_year!=null)
+			query.addCriteria(Criteria.where("year").gte(start_year).lte(end_year));
+		else if(end_year!=null)
+			query.addCriteria(Criteria.where("year").lte(end_year));
+		else if(start_year!=null)
+			query.addCriteria(Criteria.where("year").gte(end_year));
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Criteria criteria = new Criteria();
-
-		for (String word : words) {
-			criteria.and("keywords").is(word);
-		}
-
-		query = new Query(criteria);
 
 		Long count;
 		if (havePaper(query)) count = 1000L;
@@ -131,7 +130,6 @@ public class PaperDaoImp implements PaperDao {
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
-
 		return page;
 	}
 

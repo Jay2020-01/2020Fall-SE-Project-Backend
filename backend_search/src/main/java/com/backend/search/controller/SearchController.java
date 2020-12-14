@@ -47,28 +47,29 @@ public class SearchController {
 	 * @param pageSize 每页个数，必须 > 0，建议不超过 30
 	 * @return
 	 */
-	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
-	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
-		System.out.println("===== BEGIN SEARCH =====");
-		Page<Paper> page = searchService.findPaperByTitle(text, pageNum, pageSize);
-		if (page != null)
-			return Result.create(StatusCode.OK, "查询成功", page);
-		else
-			return Result.create(StatusCode.NOTFOUND, "文章不存在");
-	}
+//	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
+//	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
+//		System.out.println("===== BEGIN SEARCH =====");
+//		Page<Paper> page = searchService.findPaperByTitle(text, pageNum, pageSize);
+//		if (page != null)
+//			return Result.create(StatusCode.OK, "查询成功", page);
+//		else
+//			return Result.create(StatusCode.NOTFOUND, "文章不存在");
+//	}
 
 	/**
-	 * 按 keyword 查询，目前最好按单个单词查，比如 cosmology 这种
-	 * 然后他现在有点慢，白天研究一下
+	 * 按 keyword 查询
 	 *
 	 * @param text
+	 * @param start_year
+	 * @param end_year
 	 * @param pageNum
 	 * @param pageSize
 	 * @return
 	 */
 	@GetMapping("keyword/{text}/{pageNum}/{pageSize}")
-	public Result findPaperBykeyword(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
-		Page<Paper> page = searchService.findPaperByKeywords(text, pageNum, pageSize);
+	public Result findPaperBykeyword(@PathVariable String text,@PathVariable Integer start_year,@PathVariable Integer end_year,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
+		Page<Paper> page = searchService.findPaperByKeywords(text,start_year,end_year, pageNum, pageSize);
 		return Result.create(StatusCode.OK, "查询成功", page);
 	}
 }

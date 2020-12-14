@@ -1,11 +1,10 @@
 package com.backend.search.dao;
 
-import java.util.List;
-
+import com.backend.search.entity.Paper;
 import org.bson.types.ObjectId;
 import org.springframework.data.domain.Page;
 
-import com.backend.search.entity.Paper;
+import java.util.List;
 
 public interface PaperDao {
 
@@ -22,8 +21,8 @@ public interface PaperDao {
 	Page<Paper> findPaperByTitle(String title, Integer pageNum, Integer pageSize);
 
 //	Page<Paper> findPaperByPlainText(String context, Integer pageNum, Integer pageSize);
-	
-	Page<Paper> findPaperByKeywords(String keywords, Integer pageNum, Integer pageSize);
+
+	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize);
 	
 	List<Paper> Demo(String field, String context);
 }

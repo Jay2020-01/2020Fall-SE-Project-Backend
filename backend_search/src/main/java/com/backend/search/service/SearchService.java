@@ -38,7 +38,7 @@ public class SearchService {
 		return paperDao.findPaperByTitle(title, pageNum, pageSize);
 	}
 
-	public Page<Paper> findPaperByKeywords(String keywords, Integer pageNum, Integer pageSize) {
-		return paperDao.findPaperByKeywords(keywords, pageNum, pageSize);
+	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize) {
+		return paperDao.findPaperByKeywords(input, start_year, end_year, pageNum, pageSize);
 	}
 }
