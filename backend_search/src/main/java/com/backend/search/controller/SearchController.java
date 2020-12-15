@@ -42,7 +42,7 @@ public class SearchController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	@GetMapping("/index/hotPaper")
@@ -52,7 +52,7 @@ public class SearchController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	@GetMapping("/index/hotAuthorByC")
@@ -60,9 +60,9 @@ public class SearchController {
 		List<HotAuthor> a = searchService.findHotAuthorByC();
 		return Result.create(StatusCode.OK, "查询成功", a);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @return
 	 */
 	@GetMapping("/index/hotAuthorByH")
@@ -72,10 +72,10 @@ public class SearchController {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param text
-	 * @param start_year
-	 * @param end_year
+	 * @param startYear
+	 * @param endYear
 	 * @param pageNum
 	 * @param pageSize
 	 * @return

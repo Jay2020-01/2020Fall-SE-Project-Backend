@@ -8,6 +8,7 @@ ignore:
     - /user/register
     - /favor/my_collection
     - /follow/my_following
+    - /search
 
 spring:
   cloud:
@@ -19,7 +20,7 @@ spring:
         - id: backend-search
           uri: lb://backend-search
           predicates:
-            - Path=/paper/**
+            - Path=/search/**
         - id: backend-server
           uri: lb://backend-server
           predicates:
