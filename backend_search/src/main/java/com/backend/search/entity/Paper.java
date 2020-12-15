@@ -18,7 +18,7 @@ public class Paper {
 	private venue venue;
 	private Integer year;
 	private List<String> keywords;
-	private Integer nCitation;
+	private Integer n_citation;
 	private String pageStart;
 	private String pageEnd;
 	private String lang;

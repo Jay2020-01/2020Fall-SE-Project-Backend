@@ -41,36 +41,38 @@ public class SearchController {
 		return Result.create(StatusCode.OK, "查询成功", p);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/index/hotPaper")
 	public Result getHotPaper() {
 		List<Paper> p = searchService.findHotPaper();
 		return Result.create(StatusCode.OK, "查询成功", p);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/index/hotAuthorByC")
 	public Result getHotAuthorByC() {
 		List<HotAuthor> a = searchService.findHotAuthorByC();
 		return Result.create(StatusCode.OK, "查询成功", a);
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
 	@GetMapping("/index/hotAuthorByH")
 	public Result getHotAuthorByH() {
 		List<HotAuthor> a = searchService.findHotAuthorByH();
 		return Result.create(StatusCode.OK, "查询成功", a);
 	}
-//	@GetMapping("/title/{text}/{pageNum}/{pageSize}")
-//	public Result findPaperByTitle(@PathVariable String text,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
-//		System.out.println("===== BEGIN SEARCH =====");
-//		Page<Paper> page = searchService.findPaperByTitle(text, pageNum, pageSize);
-//		if (page != null)
-//			return Result.create(StatusCode.OK, "查询成功", page);
-//		else
-//			return Result.create(StatusCode.NOTFOUND, "文章不存在");
-//	}
 
 	/**
-	 * 按 keyword 查询
-	 *
+	 * 
 	 * @param text
 	 * @param start_year
 	 * @param end_year
@@ -78,9 +80,10 @@ public class SearchController {
 	 * @param pageSize
 	 * @return
 	 */
-	@GetMapping("/keyword/{text}/{start_year}/{end_year}/{pageNum}/{pageSize}")
-	public Result findPaperBykeyword(@PathVariable String text,@PathVariable Integer start_year,@PathVariable Integer end_year,@PathVariable Integer pageNum,@PathVariable Integer pageSize) {
-		Page<Paper> page = searchService.findPaperByKeywords(text,start_year,end_year, pageNum, pageSize);
+	@GetMapping("/keyword/{text}/{startYear}/{endYear}/{pageNum}/{pageSize}")
+	public Result findPaperBykeyword(@PathVariable String text, @PathVariable Integer startYear,
+			@PathVariable Integer endYear, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+		Page<Paper> page = searchService.findPaperByKeywords(text, startYear, endYear, pageNum, pageSize);
 		return Result.create(StatusCode.OK, "查询成功", page);
 	}
 }

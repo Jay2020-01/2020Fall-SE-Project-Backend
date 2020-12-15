@@ -10,14 +10,13 @@ import java.util.List;
 //@Document(collection = "c_h_author")
 public class HotAuthor {
 
-    @Id
-    private String _id;
+	@Id
+	private String _id;
 
-    private String aid;
-    private String name;
-    private Integer hIndex;
-    private Integer nPubs;
-    private Integer nCitation;
-    private Integer userId;
+	private String aid;
+	private String name;
+	private Integer h_index;
+	private Integer n_pubs;
+	private Integer n_citation;
+	private Integer userId;
 }
-

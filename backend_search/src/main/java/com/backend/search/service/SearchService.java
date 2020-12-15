@@ -40,19 +40,20 @@ public class SearchService {
 		return paperDao.findPaperByTitle(title, pageNum, pageSize);
 	}
 
-	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize) {
-		return paperDao.findPaperByKeywords(input, start_year, end_year, pageNum, pageSize);
+	public Page<Paper> findPaperByKeywords(String input, Integer startYear, Integer endYear, Integer pageNum,
+			Integer pageSize) {
+		return paperDao.findPaperByKeywords(input, startYear, endYear, pageNum, pageSize);
 	}
 
-    public List<Paper> findHotPaper() {
-		return  paperDao.findHotPaper();
-    }
+	public List<Paper> findHotPaper() {
+		return paperDao.findHotPaper();
+	}
 
-    public List<HotAuthor> findHotAuthorByH(){
+	public List<HotAuthor> findHotAuthorByH() {
 		return paperDao.findHotAuthorByH();
 	}
 
-	public List<HotAuthor> findHotAuthorByC(){
+	public List<HotAuthor> findHotAuthorByC() {
 		return paperDao.findHotAuthorByC();
 	}
 

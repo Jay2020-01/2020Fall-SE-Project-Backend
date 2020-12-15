@@ -12,22 +12,21 @@ public interface PaperDao {
 	Paper findPaperById(String id);
 
 	Paper findPaperBy_id(String _id);
-	
+
 	Paper findPaperBy_id(ObjectId _id);
-	
+
 	Page<Paper> findPaperByAuthorName(String name, Integer pageNum, Integer pageSize);
 
 	Page<Paper> findPaperByAuthorId(String id, Integer pageNum, Integer pageSize);
-	
+
 	Page<Paper> findPaperByTitle(String title, Integer pageNum, Integer pageSize);
 
-//	Page<Paper> findPaperByPlainText(String context, Integer pageNum, Integer pageSize);
+	Page<Paper> findPaperByKeywords(String input, Integer startYear, Integer endYear, Integer pageNum,
+			Integer pageSize);
 
-	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize);
-	
 	List<Paper> Demo(String field, String context);
 
-    List<Paper> findHotPaper();
+	List<Paper> findHotPaper();
 
 	List<HotAuthor> findHotAuthorByH();
 

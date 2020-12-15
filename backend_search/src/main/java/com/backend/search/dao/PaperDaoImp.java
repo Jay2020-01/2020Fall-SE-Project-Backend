@@ -48,12 +48,12 @@ public class PaperDaoImp implements PaperDao {
 		Query query = new Query();
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
-		//Pattern pattern = Pattern.compile(".*?" + name + ".*", Pattern.CASE_INSENSITIVE);
-		//query.addCriteria(Criteria.where("authors.name").regex(pattern));
 		query.addCriteria(Criteria.where("authors.name").is(name));
 		Long count;
-		if (havePaper(query)) count = 1000L;
-		else count = mongoTemplate.count(query, Paper.class);
+		if (havePaper(query))
+			count = 1000L;
+		else
+			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
@@ -73,8 +73,10 @@ public class PaperDaoImp implements PaperDao {
 		query.addCriteria(Criteria.where("authors.id").is(id));
 
 		Long count;
-		if (havePaper(query)) count = 1000L;
-		else count = mongoTemplate.count(query, Paper.class);
+		if (havePaper(query))
+			count = 1000L;
+		else
+			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
@@ -88,8 +90,10 @@ public class PaperDaoImp implements PaperDao {
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
 		Long count;
-		if (havePaper(query)) count = 1000L;
-		else count = mongoTemplate.count(query, Paper.class);
+		if (havePaper(query))
+			count = 1000L;
+		else
+			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
@@ -97,55 +101,25 @@ public class PaperDaoImp implements PaperDao {
 	}
 
 	@Override
-	public List<Paper> findHotPaper(){
-		List<Paper> list = mongoTemplate.findAll(Paper.class,"c_h_paper");
-		return list;
-	}
-
-	@Override
-	public List<HotAuthor> findHotAuthorByH(){
-		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class,"h_h_author");
-		return list;
-	}
-
-	@Override
-	public List<HotAuthor> findHotAuthorByC(){
-		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class,"c_h_author");
-		return list;
-	}
-
-	/*
-	@Override
-	public Page<Paper> findPaperByPlainText(String context, Integer pageNum, Integer pageSize) {
-		String[] text = context.split(" ");
-		Query query = new Query();
-		Pageable pageable = PageRequest.of(pageNum, pageSize);
-		Criteria criteria = new Criteria();
-
-		for (String str : text) {
-			Pattern pattern = Pattern.compile(".*?" + str + ".*");
-			query.addCriteria(Criteria.where("title").regex(pattern).and);
-		}
-
-		return null;
-	}
-	*/
-
-	@Override
-	public Page<Paper> findPaperByKeywords(String input,Integer start_year,Integer end_year,Integer pageNum, Integer pageSize) {
+	public Page<Paper> findPaperByKeywords(String input, Integer startYear, Integer endYear, Integer pageNum,
+			Integer pageSize) {
 
 		TextQuery query = new TextQuery(input);
-		if(start_year!=null&&end_year!=null)
-			query.addCriteria(Criteria.where("year").gte(start_year).lte(end_year));
-		else if(end_year!=null)
-			query.addCriteria(Criteria.where("year").lte(end_year));
-		else if(start_year!=null)
-			query.addCriteria(Criteria.where("year").gte(start_year));
+		
+		if (startYear != null && endYear != null)
+			query.addCriteria(Criteria.where("year").gte(startYear).lte(endYear));
+		else if (endYear != null)
+			query.addCriteria(Criteria.where("year").lte(endYear));
+		else if (startYear != null)
+			query.addCriteria(Criteria.where("year").gte(startYear));
+		
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
 		Long count;
-		if (havePaper(query)) count = 1000L;
-		else count = mongoTemplate.count(query, Paper.class);
+		if (havePaper(query))
+			count = 1000L;
+		else
+			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
 		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
@@ -160,8 +134,25 @@ public class PaperDaoImp implements PaperDao {
 		return mongoTemplate.find(query, Paper.class);
 	}
 
+	@Override
+	public List<Paper> findHotPaper() {
+		List<Paper> list = mongoTemplate.findAll(Paper.class, "c_h_paper");
+		return list;
+	}
+
+	@Override
+	public List<HotAuthor> findHotAuthorByH() {
+		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class, "h_h_author");
+		return list;
+	}
+
+	@Override
+	public List<HotAuthor> findHotAuthorByC() {
+		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class, "c_h_author");
+		return list;
+	}
+	
 	private boolean havePaper(Query query) {
-//		return true;
 		query.skip(MAX_COUNT).limit(1);
 		List<Paper> list = mongoTemplate.find(query, Paper.class);
 		query.skip(0).limit(0);
