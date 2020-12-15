@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RequestMapping("notice")
+@RequestMapping("/notice")
 @RestController
 public class NoticeController {
     @Autowired
@@ -61,6 +61,5 @@ public class NoticeController {
         noticeService.sendMessage(message, userId, notifierName, receiverName, 1);
         return Result.create(200, "success");
     }
-
 
 }
