@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@RestController("/notice")
+@RequestMapping("notice")
+@RestController
 public class NoticeController {
     @Autowired
     private NoticeService noticeService;

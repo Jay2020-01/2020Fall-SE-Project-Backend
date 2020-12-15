@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("user")
 public class UserController {
     @Autowired
     private UserMapper userMapper;
