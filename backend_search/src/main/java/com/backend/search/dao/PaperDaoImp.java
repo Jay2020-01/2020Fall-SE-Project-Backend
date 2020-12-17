@@ -100,7 +100,9 @@ public class PaperDaoImp implements PaperDao {
 			Integer pageSize) {
 
 		TextQuery query = new TextQuery(input);
-
+		if (startYear != null && startYear <= 1850) startYear = null;
+		if (endYear != null && endYear >= 2025) endYear = null;
+		
 		if (startYear != null && endYear != null)
 			query.addCriteria(Criteria.where("year").gte(startYear).lte(endYear));
 		else if (endYear != null)

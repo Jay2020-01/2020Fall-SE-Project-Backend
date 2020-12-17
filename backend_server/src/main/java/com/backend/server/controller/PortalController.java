@@ -64,7 +64,19 @@ public class PortalController {
         PortalReturn portalReturn = new PortalReturn(authors, papers);
         return Result.create(200, "success", portalReturn);
     }
-
+    
+    /**
+     * 根据名字完全匹配作者
+     * @param key_word
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    @GetMapping("/personal_center/academic_homepage/search/{key_word}/{pageNum}/{pageSize}")
+    public Result searchAuthorByName(@PathVariable String key_word, @PathVariable Integer pageNum, @PathVariable Integer pageSize) {
+    	return Result.create(200, "查询成功", authorService.findAuthorByName(key_word, pageNum, pageSize));
+    }
+    
     /**
      * 修改门户信息
      * @param author
