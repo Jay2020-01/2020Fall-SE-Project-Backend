@@ -45,9 +45,10 @@ public class FollowService {
      * @param followingId 被关注着id
      */
     public void removeFollower(String followingId) {
-        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
+//        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         Map<String, Object> columnMap = new HashMap<>();
-        columnMap.put("follower_id",user.getId());
+//        columnMap.put("follower_id",user.getId());
+        columnMap.put("follower_id",1);
         columnMap.put("following_id", followingId);
         followMapper.deleteByMap(columnMap);
     }

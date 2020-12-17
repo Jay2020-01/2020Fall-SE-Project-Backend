@@ -37,15 +37,15 @@ public class FollowController {
      */
     @PostMapping("/follow_scholar")
     public Result newFollow(String person_id) {
-        Integer followerId = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request)).getId();
-        try {
-            if(followService.isFollowed(followerId,person_id))
-                return Result.create(StatusCode.OK,"已关注该学者");
-            followService.addFollowing(followerId,person_id);
-            return Result.create(StatusCode.OK, "关注成功");
-        } catch (RuntimeException e) {
-            return Result.create(StatusCode.ERROR, e.getMessage());
-        }
+            Integer followerId = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request)).getId();
+            try {
+                if(followService.isFollowed(followerId,person_id))
+                    return Result.create(StatusCode.OK,"已关注该学者");
+                followService.addFollowing(followerId,person_id);
+                return Result.create(StatusCode.OK, "关注成功");
+            } catch (RuntimeException e) {
+                return Result.create(StatusCode.ERROR, e.getMessage());
+            }
     }
 
     /**

@@ -33,14 +33,12 @@ public class PaperDaoImp implements PaperDao {
 
 	@Override
 	public Paper findPaperBy_id(ObjectId _id) {
-		Paper paper = mongoTemplate.findById(_id, Paper.class);
-		return paper;
+		return mongoTemplate.findById(_id, Paper.class);
 	}
 
 	@Override
 	public Paper findPaperBy_id(String _id) {
-		Paper paper = mongoTemplate.findById(_id, Paper.class);
-		return paper;
+		return mongoTemplate.findById(_id, Paper.class);
 	}
 
 	@Override
@@ -56,9 +54,8 @@ public class PaperDaoImp implements PaperDao {
 			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
-		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
 
-		return page;
+		return new PageImpl<Paper>(list, pageable, count);
 	}
 
 	@Override
@@ -79,9 +76,8 @@ public class PaperDaoImp implements PaperDao {
 			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
-		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
 
-		return page;
+		return new PageImpl<Paper>(list, pageable, count);
 	}
 
 	@Override
@@ -96,8 +92,7 @@ public class PaperDaoImp implements PaperDao {
 			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
-		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
-		return page;
+		return new PageImpl<Paper>(list, pageable, count);
 	}
 
 	@Override
@@ -105,14 +100,14 @@ public class PaperDaoImp implements PaperDao {
 			Integer pageSize) {
 
 		TextQuery query = new TextQuery(input);
-		
+
 		if (startYear != null && endYear != null)
 			query.addCriteria(Criteria.where("year").gte(startYear).lte(endYear));
 		else if (endYear != null)
 			query.addCriteria(Criteria.where("year").lte(endYear));
 		else if (startYear != null)
 			query.addCriteria(Criteria.where("year").gte(startYear));
-		
+
 		Pageable pageable = PageRequest.of(pageNum, pageSize);
 
 		Long count;
@@ -122,8 +117,7 @@ public class PaperDaoImp implements PaperDao {
 			count = mongoTemplate.count(query, Paper.class);
 
 		List<Paper> list = mongoTemplate.find(query.with(pageable), Paper.class);
-		Page<Paper> page = new PageImpl<Paper>(list, pageable, count);
-		return page;
+		return new PageImpl<Paper>(list, pageable, count);
 	}
 
 	@Override
@@ -136,22 +130,19 @@ public class PaperDaoImp implements PaperDao {
 
 	@Override
 	public List<Paper> findHotPaper() {
-		List<Paper> list = mongoTemplate.findAll(Paper.class, "c_h_paper");
-		return list;
+		return mongoTemplate.findAll(Paper.class, "c_h_paper");
 	}
 
 	@Override
 	public List<HotAuthor> findHotAuthorByH() {
-		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class, "h_h_author");
-		return list;
+		return mongoTemplate.findAll(HotAuthor.class, "h_h_author");
 	}
 
 	@Override
 	public List<HotAuthor> findHotAuthorByC() {
-		List<HotAuthor> list = mongoTemplate.findAll(HotAuthor.class, "c_h_author");
-		return list;
+		return mongoTemplate.findAll(HotAuthor.class, "c_h_author");
 	}
-	
+
 	private boolean havePaper(Query query) {
 		query.skip(MAX_COUNT).limit(1);
 		List<Paper> list = mongoTemplate.find(query, Paper.class);

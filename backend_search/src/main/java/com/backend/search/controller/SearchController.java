@@ -22,12 +22,6 @@ public class SearchController {
 	@Autowired
 	SearchService searchService;
 
-	@GetMapping("/ping")
-	public Result Ping() {
-		System.out.println("====== Ping Success =====");
-		return Result.create(StatusCode.OK, "查询成功", "SUCCESS");
-	}
-
 	/**
 	 * 按 id (pid) 查询文章
 	 *
@@ -45,7 +39,7 @@ public class SearchController {
 	 *
 	 * @return
 	 */
-	@GetMapping("/index/hotPaper")
+	@GetMapping("/hotPaper")
 	public Result getHotPaper() {
 		List<Paper> p = searchService.findHotPaper();
 		return Result.create(StatusCode.OK, "查询成功", p);
@@ -55,7 +49,7 @@ public class SearchController {
 	 *
 	 * @return
 	 */
-	@GetMapping("/index/hotAuthorByC")
+	@GetMapping("/hotAuthorByC")
 	public Result getHotAuthorByC() {
 		List<HotAuthor> a = searchService.findHotAuthorByC();
 		return Result.create(StatusCode.OK, "查询成功", a);
@@ -65,7 +59,7 @@ public class SearchController {
 	 *
 	 * @return
 	 */
-	@GetMapping("/index/hotAuthorByH")
+	@GetMapping("/hotAuthorByH")
 	public Result getHotAuthorByH() {
 		List<HotAuthor> a = searchService.findHotAuthorByH();
 		return Result.create(StatusCode.OK, "查询成功", a);

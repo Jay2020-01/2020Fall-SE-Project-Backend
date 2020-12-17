@@ -17,7 +17,7 @@ public class PortalService {
     @Autowired
     private PortalMapper portalMapper;
     @Autowired
-    private static RedisTemplate<String, String> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
@@ -58,6 +58,7 @@ public class PortalService {
      * @param mail 邮箱
      */
     public void sendMail(String mail) {
+        System.out.println("mail = " + mail);
         Random _random = new Random();
         int random = _random.nextInt(899999) + 100001;
         Map<String, String> map = new HashMap<>();
