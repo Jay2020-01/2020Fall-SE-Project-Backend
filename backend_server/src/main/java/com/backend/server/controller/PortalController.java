@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RequestMapping("portal")
+@RequestMapping("/portal")
 @RestController
 public class PortalController {
     @Autowired
