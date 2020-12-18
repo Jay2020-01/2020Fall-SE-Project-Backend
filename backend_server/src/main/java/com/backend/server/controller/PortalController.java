@@ -35,13 +35,13 @@ public class PortalController {
 
     /**
      * 查看作者信息
-     * @param authorId
+     * @param aid
      * @return
      */
     @PostMapping("/personal_center/academic_homepage/view")
-    public Result checkPortal(String authorId) {
-        Map authors = authorService.queryAuthor(authorId);
-        List<Map> papers = paperService.queryPaperByAuthorId((String) authors.get("id"));
+    public Result checkPortal(String aid) {
+        Map authors = authorService.queryAuthor(aid);
+        List<Map> papers = paperService.queryPaperByAuthorId(aid);
         List<Map> paperReturn = new ArrayList<>();
         for (int i = 0; i < 5 && i < papers.size(); ++i) {
             Map paper = papers.get(i);
@@ -54,13 +54,13 @@ public class PortalController {
 
     /**
      * 查看门户
-     * @param id
+     * @param aid
      * @return
      */
     @PostMapping("/profile/view")
-    public Result viewPortal(String id) {
-        Map authors = authorService.queryAuthor(id);
-        List<Map> papers = paperService.queryPaperByAuthorId((String) authors.get("id"));
+    public Result viewPortal(String aid) {
+        Map authors = authorService.queryAuthor(aid);
+        List<Map> papers = paperService.queryPaperByAuthorId(aid);
         PortalReturn portalReturn = new PortalReturn(authors, papers);
         return Result.create(200, "success", portalReturn);
     }
@@ -90,19 +90,21 @@ public class PortalController {
 
 
     /**
-     * 验证码检验
-     * @param certification
+     * 校验码验证
+     * @param userId
+     * @param aid
+     * @param email
+     * @param code
      * @return
      */
 
     @PostMapping("/personal_center/academic_homepage/check")
-    public Result certificationPortal(@RequestBody Certification certification) {
-
+    public Result certificationPortal(Integer userId, String aid, String email, String code) {
         //查看验证码是否正确
-        boolean isTrue = portalService.checkMailCode(certification.getEmail(), certification.getCode());
+        boolean isTrue = portalService.checkMailCode(email, code);
         if (!isTrue) return Result.create(StatusCode.CODE_ERROR, "验证码错误");
         //成功关联用户与门户
-        authorService.bindUser(certification);
+        authorService.bindUser(userId, aid);
 
         return Result.create(200, "success");
     }
