@@ -132,17 +132,29 @@ public class PaperDaoImp implements PaperDao {
 
 	@Override
 	public List<Paper> findHotPaper() {
-		return mongoTemplate.findAll(Paper.class, "c_h_paper");
+		Query query = new Query();
+		query.fields().include("title");
+		query.fields().include("pid");
+		query.fields().include("n_citation");
+		return mongoTemplate.find(query,Paper.class, "c_h_paper");
 	}
 
 	@Override
 	public List<HotAuthor> findHotAuthorByH() {
-		return mongoTemplate.findAll(HotAuthor.class, "h_h_author");
+		Query query = new Query();
+		query.fields().include("aid");
+		query.fields().include("name");
+		query.fields().include("h_index");
+		return mongoTemplate.find(query,HotAuthor.class, "h_h_author");
 	}
 
 	@Override
 	public List<HotAuthor> findHotAuthorByC() {
-		return mongoTemplate.findAll(HotAuthor.class, "c_h_author");
+		Query query = new Query();
+		query.fields().include("aid");
+		query.fields().include("name");
+		query.fields().include("n_citation");
+		return mongoTemplate.find(query,HotAuthor.class, "c_h_author");
 	}
 
 	private boolean havePaper(Query query) {
