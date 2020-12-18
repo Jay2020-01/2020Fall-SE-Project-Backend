@@ -27,29 +27,29 @@ public class AuthorService {
 
     /**
      * 查看作者信息
-     * @param portalId
+     * @param aid
      * @return
      */
-    public Map queryAuthor(String portalId) {
+    public Map queryAuthor(String aid) {
 
-        Query query = new Query(Criteria.where("_id").is(new ObjectId(portalId)));
+        Query query = new Query(Criteria.where("aid").is(aid));
         Map authors = mongoTemplate.findOne(query, Map.class, "author");
         //System.out.println(authors);
         return authors;
     }
 
-    public void bindUser(Certification certification) {
-        Integer userId = certification.getUserId();
-        String authorId = certification.getPortalId();
-        Query query = new Query(Criteria.where("_id").is(new ObjectId(authorId)));
+    public void bindUser(Integer userId, String authorId) {
+        Query query = new Query(Criteria.where("aid").is(authorId));
         Update update = new Update().set("user_id", userId);
         mongoTemplate.updateFirst(query, update, "author");
     }
 
 
     public void updateById(Change author) {
-        Query query = new Query(Criteria.where("_id").is(new ObjectId(author.get_id())));
-        Update update = new Update().set("position", author.getPosition()).set("name", author.getName());
+        Query query = new Query(Criteria.where("aid").is(author.getAid()));
+        Update update = new Update().set("name", author.getExpertName()).set("phone", author.getPhoneNumber()).set("email", author.getEmail())
+                                    .set("orgination", author.getOrgination()).set("address", author.getAddress()).set("homepage", author.getHomepage())
+                                    .set("sex", author.getSex()).set("expertInfo", author.getExpertInfo()).set("work", author.getWork()).set("edu", author.getEdu());
         mongoTemplate.updateFirst(query, update,"author");
     }
     

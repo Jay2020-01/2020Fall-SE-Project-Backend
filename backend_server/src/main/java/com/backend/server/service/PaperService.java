@@ -14,8 +14,8 @@ public class PaperService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    public List<Map> queryPaperByAuthorId(String portalId) {
-        Query query = new Query(Criteria.where("authors.id").is(portalId));
+    public List<Map> queryPaperByAuthorId(String authorId) {
+        Query query = new Query(Criteria.where("authors.id").is(authorId));
         List<Map> papers = mongoTemplate.find(query, Map.class, "paper");
         return papers;
     }
