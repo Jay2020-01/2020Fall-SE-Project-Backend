@@ -97,6 +97,7 @@ public class PortalController {
 
     @PostMapping("/personal_center/academic_homepage/check")
     public Result certificationPortal(@RequestBody Certification certification) {
+
         //查看验证码是否正确
         boolean isTrue = portalService.checkMailCode(certification.getEmail(), certification.getCode());
         if (!isTrue) return Result.create(StatusCode.CODE_ERROR, "验证码错误");

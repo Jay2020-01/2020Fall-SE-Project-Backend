@@ -57,6 +57,10 @@ public class AuthorService {
     	Query query = new Query(Criteria.where("name").is(name));
     	Pageable pageable = PageRequest.of(pageNum, pageSize);
         List<Map> list = mongoTemplate.find(query.with(pageable), Map.class, "author");
+        for (Map map : list) {
+            String portalId = map.get("_id").toString();
+            map.put("portalId", portalId);
+        }
         long count = (pageNum + 1) * pageSize;
         if (list.size() == pageSize) count += pageSize;
         else if (list.size() == 0) count -= pageSize;
