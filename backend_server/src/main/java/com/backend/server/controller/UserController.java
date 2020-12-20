@@ -51,12 +51,12 @@ public class UserController {
      * 用户注册
      */
     @PostMapping("/register")
-    public Result register(String name,String password,String mail) {
-        if (!formatUtil.checkStringNull(name,password,mail)) {
+    public Result register(String username,String email, String password) {
+        if (!formatUtil.checkStringNull(username,password,email)) {
             return Result.create(StatusCode.ERROR, "注册失败，字段不完整");
         }
         try {
-            Map<String, Object> map = userService.register(name,mail,password);
+            Map<String, Object> map = userService.register(username,email,password);
             return Result.create(StatusCode.OK, "注册成功",map);
         } catch (RuntimeException e) {
             return Result.create(StatusCode.ERROR, "注册失败，" + e.getMessage());
