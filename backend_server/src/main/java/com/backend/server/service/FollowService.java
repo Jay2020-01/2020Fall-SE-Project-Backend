@@ -33,9 +33,6 @@ public class FollowService {
      * @param followingId 被关注者id
      */
     public void addFollowing(Integer followerId, String followingId) {
-        if(isFollowed(followerId,followingId)) {
-            throw new RuntimeException("关注重复");
-        }
         Follow follow = new Follow(null,followerId,followingId,new Date());
         followMapper.insert(follow);
     }
@@ -45,10 +42,9 @@ public class FollowService {
      * @param followingId 被关注着id
      */
     public void removeFollower(String followingId) {
-//        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
+        User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         Map<String, Object> columnMap = new HashMap<>();
-//        columnMap.put("follower_id",user.getId());
-        columnMap.put("follower_id",1);
+        columnMap.put("follower_id",user.getId());
         columnMap.put("following_id", followingId);
         followMapper.deleteByMap(columnMap);
     }
@@ -73,9 +69,10 @@ public class FollowService {
      * 查询用户粉丝数量
      * @param id 用户id
      */
-    public int getFollowerCountById(Integer id) throws RuntimeException {
-        if(userMapper.selectById(id) == null)
-            throw new RuntimeException("用户不存在");
+    public int getFollowerCountById(String id) throws RuntimeException {
+//        if(userMapper.selectById(id) == null)
+//            throw new RuntimeException("用户不存在");
+        System.out.println("following_id = " + id);
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("following_id",id);
         return followMapper.selectByMap(columnMap).size();
