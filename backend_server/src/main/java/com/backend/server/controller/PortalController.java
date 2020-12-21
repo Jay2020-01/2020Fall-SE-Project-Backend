@@ -4,6 +4,7 @@ import com.backend.server.entity.pojo.*;
 import com.backend.server.service.AuthorService;
 import com.backend.server.service.PaperService;
 import com.backend.server.service.PortalService;
+import com.backend.server.service.UserService;
 import com.backend.server.utils.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -24,6 +25,9 @@ public class PortalController {
 
     @Autowired
     private PortalService portalService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
@@ -104,7 +108,8 @@ public class PortalController {
         boolean isTrue = portalService.checkMailCode(email, code);
         if (!isTrue) return Result.create(StatusCode.CODE_ERROR, "验证码错误");
         //成功关联用户与门户
-        authorService.bindUser(userId, aid);
+        String username = userService.getUserById(userId).getName();
+        authorService.bindUser(userId, username, aid);
 
         return Result.create(200, "success");
     }

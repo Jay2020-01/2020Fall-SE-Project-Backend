@@ -38,9 +38,9 @@ public class AuthorService {
         return authors;
     }
 
-    public void bindUser(Integer userId, String authorId) {
+    public void bindUser(Integer userId, String username, String authorId) {
         Query query = new Query(Criteria.where("aid").is(authorId));
-        Update update = new Update().set("user_id", userId);
+        Update update = new Update().set("user_id", userId).set("username", username);
         mongoTemplate.updateFirst(query, update, "author");
     }
 
