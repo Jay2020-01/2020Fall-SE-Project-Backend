@@ -8,6 +8,6 @@ import lombok.Data;
 public class author {
 	private String name;
 	private String org;
-	@Field("author.id")
-	private String aid;
+	@Field("id")
+	private String id;
 }

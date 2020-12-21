@@ -30,9 +30,7 @@ public class SearchController {
 	 */
 	@GetMapping("/id/{paperId}")
 	public Result getPaperById(@PathVariable String paperId) {
-		System.out.println("====== BEGIN FIND =====");
-		Paper p = searchService.findPaperByPid(paperId);
-		return Result.create(StatusCode.OK, "查询成功", p);
+		return Result.create(StatusCode.OK, "查询成功", searchService.findPaperByPid_(paperId));
 	}
 
 	/**

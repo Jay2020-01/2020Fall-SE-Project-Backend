@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @Component
@@ -29,6 +30,12 @@ public class PaperDaoImp implements PaperDao {
 	public Paper findPaperById(String id) {
 		Query query = new Query(Criteria.where("pid").is(id));
 		return mongoTemplate.findOne(query, Paper.class);
+	}
+
+	@Override
+	public Map findPaperById_(String id) {
+		Query query = new Query(Criteria.where("pid").is(id));
+		return mongoTemplate.findOne(query, Map.class, "paper");
 	}
 
 	@Override
@@ -100,9 +107,11 @@ public class PaperDaoImp implements PaperDao {
 			Integer pageSize) {
 
 		TextQuery query = new TextQuery(input);
-		if (startYear != null && startYear <= 1850) startYear = null;
-		if (endYear != null && endYear >= 2025) endYear = null;
-		
+		if (startYear != null && startYear <= 1850)
+			startYear = null;
+		if (endYear != null && endYear >= 2025)
+			endYear = null;
+
 		if (startYear != null && endYear != null)
 			query.addCriteria(Criteria.where("year").gte(startYear).lte(endYear));
 		else if (endYear != null)
@@ -136,7 +145,7 @@ public class PaperDaoImp implements PaperDao {
 		query.fields().include("title");
 		query.fields().include("pid");
 		query.fields().include("n_citation");
-		return mongoTemplate.find(query,Paper.class, "c_h_paper");
+		return mongoTemplate.find(query, Paper.class, "c_h_paper");
 	}
 
 	@Override
@@ -145,7 +154,7 @@ public class PaperDaoImp implements PaperDao {
 		query.fields().include("aid");
 		query.fields().include("name");
 		query.fields().include("h_index");
-		return mongoTemplate.find(query,HotAuthor.class, "h_h_author");
+		return mongoTemplate.find(query, HotAuthor.class, "h_h_author");
 	}
 
 	@Override
@@ -154,7 +163,7 @@ public class PaperDaoImp implements PaperDao {
 		query.fields().include("aid");
 		query.fields().include("name");
 		query.fields().include("n_citation");
-		return mongoTemplate.find(query,HotAuthor.class, "c_h_author");
+		return mongoTemplate.find(query, HotAuthor.class, "c_h_author");
 	}
 
 	private boolean havePaper(Query query) {

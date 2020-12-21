@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SearchService {
@@ -20,6 +21,10 @@ public class SearchService {
 		return paperDao.findPaperById(pid);
 	}
 
+	public Map findPaperByPid_(String pid) {
+		return paperDao.findPaperById_(pid);
+	}
+	
 	public Paper findPaperBy_id(String _id) {
 		return paperDao.findPaperBy_id(_id);
 	}
