@@ -59,11 +59,11 @@ public class FavorController {
         }
     }
 
-    @GetMapping("/isFavor/{paperId}")
-    public Result isFavor(@PathVariable String paperId){
+    @GetMapping("/isFavor")
+    public Result isFavor(String paper_id){
         List<Paper> paperList = favorService.getFavorList();
         for(Paper p: paperList){
-            if(p.getPid().equals(paperId))
+            if(p.getPid().equals(paper_id))
                 return Result.create(StatusCode.OK, "查询成功", true);
         }
         return Result.create(StatusCode.OK, "查询成功", false);

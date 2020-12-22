@@ -5,6 +5,7 @@ package com.backend.server;
 import com.backend.server.dao.AuthorDaoImp;
 import com.backend.server.dao.PaperDaoImp;
 import com.backend.server.entity.Author;
+import com.backend.server.entity.Paper;
 import com.backend.server.mapper.FavorMapper;
 import com.backend.server.mapper.FollowMapper;
 import com.backend.server.mapper.UserMapper;
@@ -46,10 +47,10 @@ class BackendServerApplicationTests {
 
     @Test
     void demo(){
-        List<Author> res = followService.getFollowList();
-        for(Author author: res){
-            if(author.getAid().equals("53f43d9cdabfaee43ec67555"))
-                System.out.println("okk1");
+        List<Paper> paperList = favorService.getFavorList();
+        for(Paper p: paperList){
+            if(p.getPid().equals("53e9a178b7602d9702a6c5ca"))
+                System.out.println("OKK");
         }
     }
 
