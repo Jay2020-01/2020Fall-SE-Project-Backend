@@ -27,14 +27,15 @@ public class AppealController {
     @Autowired
     private NoticeService noticeService;
 
-    private JwtTokenUtil util = new JwtTokenUtil();
+    @Autowired
+    private JwtTokenUtil util;
 
 
     //发起申诉
     @PostMapping("/post_appeal")
     public Result postAppeal(@RequestBody PostAppeal appeal, HttpServletRequest request) {
-        //Integer userId = util.getUserIdFromRequest(request);
-        Integer userId = 1;
+        Integer userId = util.getUserIdFromRequest(request);
+        //Integer userId = 1;
         appealService.insertAppeal(appeal, userId);
         return Result.create(200, "success");
     }

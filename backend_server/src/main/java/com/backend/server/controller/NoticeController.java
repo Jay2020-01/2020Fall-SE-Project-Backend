@@ -1,7 +1,6 @@
 package com.backend.server.controller;
 
 import com.backend.server.entity.Notice;
-import com.backend.server.entity.pojo.Message;
 import com.backend.server.entity.pojo.MessageList;
 import com.backend.server.entity.pojo.Result;
 import com.backend.server.service.NoticeService;
@@ -22,7 +21,8 @@ public class NoticeController {
     @Autowired
     private UserService userService;
 
-    private JwtTokenUtil util = new JwtTokenUtil();
+    @Autowired
+    private JwtTokenUtil util;
 
     //私信
 
