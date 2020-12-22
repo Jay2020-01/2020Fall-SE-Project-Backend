@@ -4,10 +4,13 @@ import com.backend.server.entity.Author;
 import com.backend.server.entity.pojo.Result;
 import com.backend.server.entity.pojo.StatusCode;
 import com.backend.server.service.FollowService;
-import com.backend.server.service.UserService;
+import com.backend.server.utils.FormatUtil;
 import com.backend.server.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -18,7 +21,7 @@ public class FollowController {
     @Autowired
     private FollowService followService;
     @Autowired
-    private UserService userService;
+    private FormatUtil formatUtil;
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
@@ -37,7 +40,9 @@ public class FollowController {
      */
     @PostMapping("/follow_scholar")
     public Result newFollow(String person_id) {
-        System.out.println("关注用户 : " + person_id);
+        if (!formatUtil.checkStringNull(person_id)) {
+            return Result.create(StatusCode.ERROR, "person_id为空");
+        }
         Integer followerId = jwtTokenUtil.getUserIdFromRequest(request);
         try {
             if(followService.isFollowed(followerId,person_id))
@@ -54,7 +59,9 @@ public class FollowController {
      */
     @PostMapping("/remove_scholar")
     public Result removeFollow(String person_id) {
-        System.out.println("取消关注 : " + person_id);
+        if (!formatUtil.checkStringNull(person_id)) {
+            return Result.create(StatusCode.ERROR, "person_id为空");
+        }
         try{
             followService.removeFollower(person_id);
             return Result.create(StatusCode.OK, "移除成功");
@@ -70,6 +77,9 @@ public class FollowController {
      */
     @GetMapping("/followerNum")
     public Result followingNum(String person_id){
+        if (!formatUtil.checkStringNull(person_id)) {
+            return Result.create(StatusCode.ERROR, "person_id为空");
+        }
         int num = followService.getFollowerCountById(person_id);
         return Result.create(StatusCode.OK, "查询成功", num);
     }
@@ -89,11 +99,11 @@ public class FollowController {
      */
     @GetMapping("/isFollow")
     public Result isFollow(String person_id){
-        List<Author> res = followService.getFollowList();
-        for(Author author: res){
-            if(author.getAid().equals(person_id))
-                return Result.create(StatusCode.OK, "查询成功", true);
+        if (!formatUtil.checkStringNull(person_id)) {
+            return Result.create(StatusCode.ERROR, "person_id为空");
         }
-        return Result.create(StatusCode.OK, "查询成功", false);
+        Integer userId = jwtTokenUtil.getUserIdFromRequest(request);
+        boolean flag = followService.isFollowed(userId,person_id);
+        return Result.create(StatusCode.OK, "查询成功", flag);
     }
 }

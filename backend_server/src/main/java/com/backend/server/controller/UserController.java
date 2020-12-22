@@ -118,16 +118,6 @@ public class UserController {
 
     /*=============================================================*/
 
-    @RequestMapping("/demo")
-    public Result demo() {
-        return Result.create(StatusCode.OK,"ok","test success");
-    }
-    @RequestMapping("/demo/{id}")
-    public Result demo(@PathVariable Integer id) {
-        String name = jwtTokenUtil.getUsernameFromRequest(request);
-        Integer userId = jwtTokenUtil.getUserIdFromRequest(request);
-        return Result.create(StatusCode.OK,"ok",name+" : "+userId);
-    }
     @GetMapping("/getUser/{userId}")
     public Result getUserByName(@PathVariable Integer userId){
         User user = userService.getUserById(userId);

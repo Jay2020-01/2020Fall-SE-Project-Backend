@@ -68,10 +68,11 @@ public class FavorService {
      * @param userId 用户id
      */
     public boolean isFavored(String paperId, Integer userId) {
+        System.out.println("isFavored: pid = " + paperId + " uid = " + userId);
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("paper_id",paperId);
         columnMap.put("user_id", userId);
         List<Favor> favorList = favorMapper.selectByMap(columnMap);
-        return favorList.size() == 1;
+        return favorList.size() > 0;
     }
 }

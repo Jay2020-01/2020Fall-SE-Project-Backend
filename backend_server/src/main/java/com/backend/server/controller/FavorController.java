@@ -6,6 +6,7 @@ import com.backend.server.entity.pojo.Result;
 import com.backend.server.entity.pojo.StatusCode;
 import com.backend.server.service.FavorService;
 import com.backend.server.service.UserService;
+import com.backend.server.utils.FormatUtil;
 import com.backend.server.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,8 @@ import java.util.List;
 public class FavorController {
     @Autowired
     private JwtTokenUtil jwtTokenUtil;
+    @Autowired
+    private FormatUtil formatUtil;
     @Autowired
     private HttpServletRequest request;
     @Autowired
@@ -37,6 +40,9 @@ public class FavorController {
 
     @PostMapping("/collect_paper")
     public Result addFavor(String paper_id){
+        if (!formatUtil.checkStringNull(paper_id)) {
+            return Result.create(StatusCode.ERROR, "paper_id为空");
+        }
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
             if(favorService.isFavored(paper_id,user.getId()))
@@ -50,6 +56,9 @@ public class FavorController {
 
     @PostMapping("/remove_paper")
     public Result removeFavor(String paper_id){
+        if (!formatUtil.checkStringNull(paper_id)) {
+            return Result.create(StatusCode.ERROR, "paper_id为空");
+        }
         User user = userService.getUserById(jwtTokenUtil.getUserIdFromRequest(request));
         try {
             favorService.removeFavor(paper_id,user.getId());
@@ -61,11 +70,10 @@ public class FavorController {
 
     @GetMapping("/isFavor")
     public Result isFavor(String paper_id){
-        List<Paper> paperList = favorService.getFavorList();
-        for(Paper p: paperList){
-            if(p.getPid().equals(paper_id))
-                return Result.create(StatusCode.OK, "查询成功", true);
+        if (!formatUtil.checkStringNull(paper_id)) {
+            return Result.create(StatusCode.ERROR, "paper_id为空");
         }
-        return Result.create(StatusCode.OK, "查询成功", false);
+        Integer userId = jwtTokenUtil.getUserIdFromRequest(request);
+        return Result.create(StatusCode.OK, "查询成功", favorService.isFavored(paper_id,userId));
     }
 }
