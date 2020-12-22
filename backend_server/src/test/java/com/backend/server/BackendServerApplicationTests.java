@@ -46,11 +46,8 @@ class BackendServerApplicationTests {
 
     @Test
     void demo(){
-        List<Author> res = followService.getFollowList();
-        for(Author author: res){
-            if(author.getAid().equals("53f43d9cdabfaee43ec67555"))
-                System.out.println("okk1");
-        }
+        if(followService.isFollowed(26,"53f4278bdabfaeb1a7b5abb9"))
+            System.out.println("OKK");
     }
 
     @Test

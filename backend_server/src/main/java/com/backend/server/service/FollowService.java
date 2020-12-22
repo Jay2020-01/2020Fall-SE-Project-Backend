@@ -70,9 +70,6 @@ public class FollowService {
      * @param id 用户id
      */
     public int getFollowerCountById(String id) throws RuntimeException {
-//        if(userMapper.selectById(id) == null)
-//            throw new RuntimeException("用户不存在");
-        System.out.println("following_id = " + id);
         Map<String, Object> columnMap = new HashMap<>();
         columnMap.put("following_id",id);
         return followMapper.selectByMap(columnMap).size();
@@ -100,6 +97,6 @@ public class FollowService {
         columnMap.put("follower_id",followerId);
         columnMap.put("following_id", followingId);
         List<Follow> followList = followMapper.selectByMap(columnMap);
-        return followList.size() == 1;
+        return followList.size() > 0;
     }
 }
