@@ -31,29 +31,29 @@ public class NoticeController {
      * @param request
      * @return
      */
-    @GetMapping("/get_person_list")
-    public Result getMessageList(HttpServletRequest request) {
-        Integer userId = util.getUserIdFromRequest(request);
-        //Integer userId = 1;
+    @GetMapping("/get_person_list/{user_id}")
+    public Result getMessageList(@PathVariable("user_id") Integer userId, HttpServletRequest request) {
+        //Integer userId = util.getUserIdFromRequest(request);
+        //Integer userId = 18;
         List<Notice> notices = noticeService.getMessageByUserId(userId);
         List<MessageList> personList = userService.getUserByNotice(notices, userId);
         return Result.create(200, "success", personList);
     }
 
 
-    @GetMapping("/get_message_content")
-    public Result getMessageContent(@RequestParam("target_user_id")Integer target, HttpServletRequest request) {
-        Integer userId = util.getUserIdFromRequest(request);
-        //Integer userId = 1;
+    @GetMapping("/get_message_content/{user_id}")
+    public Result getMessageContent(@PathVariable("user_id") Integer userId, @RequestParam("target_user_id")Integer target, HttpServletRequest request) {
+        //Integer userId = util.getUserIdFromRequest(request);
+        //Integer userId = 18;
         List<Notice> notices = noticeService.getMessageByIds(userId, target);
 
         return Result.create(200, "success", notices);
     }
 
     //发送私信
-    @PostMapping("/post_message")
-    public Result sendMessage(String content, Integer target_user_id,HttpServletRequest request) {
-        Integer userId = util.getUserIdFromRequest(request);
+    @PostMapping("/post_message/{user_id}")
+    public Result sendMessage(@PathVariable("user_id") Integer userId, String content, Integer target_user_id,HttpServletRequest request) {
+        //Integer userId = util.getUserIdFromRequest(request);
         //Integer userId = 18;
         String notifierName = userService.getUserById(userId).getUserName();
         String receiverName = userService.getUserById(target_user_id).getUserName();
