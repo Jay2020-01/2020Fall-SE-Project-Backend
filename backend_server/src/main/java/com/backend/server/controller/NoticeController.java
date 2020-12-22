@@ -52,13 +52,13 @@ public class NoticeController {
 
     //发送私信
     @PostMapping("/post_message")
-    public Result sendMessage(@RequestBody Message message, HttpServletRequest request) {
+    public Result sendMessage(String content, Integer target_user_id,HttpServletRequest request) {
         JwtTokenUtil util = new JwtTokenUtil();
         Integer userId = util.getUserIdFromRequest(request);
         //Integer userId = 1;
         String notifierName = userService.getUserById(userId).getUserName();
-        String receiverName = userService.getUserById(message.getTarget_user_id()).getUserName();
-        noticeService.sendMessage(message, userId, notifierName, receiverName, 1);
+        String receiverName = userService.getUserById(target_user_id).getUserName();
+        noticeService.sendMessage(content, target_user_id, userId, notifierName, receiverName, 1);
         return Result.create(200, "success");
     }
 

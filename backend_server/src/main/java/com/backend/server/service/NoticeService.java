@@ -29,12 +29,12 @@ public class NoticeService {
     }
 
 
-    public void sendMessage(Message message, Integer userId, String notifierName, String receiverName, Integer type) {
+    public void sendMessage(String content, Integer target, Integer userId, String notifierName, String receiverName, Integer type) {
         Notice notice = new Notice();
-        notice.setContent(message.getContent());
+        notice.setContent(content);
         notice.setNotifierId(userId);
         notice.setNotifierName(notifierName);
-        notice.setReceiverId(message.getTarget_user_id());
+        notice.setReceiverId(target);
         notice.setReceiverName(receiverName);
         notice.setCreateTime(new Timestamp(new Date().getTime()));
         notice.setType(type);
