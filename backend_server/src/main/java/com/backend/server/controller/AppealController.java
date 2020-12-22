@@ -46,11 +46,10 @@ public class AppealController {
     public Result reviewAppeal(Integer appeal_id, Boolean attitude) {
         Integer userId = appealService.getAppealById(appeal_id);
         String receiverName = userService.getUserById(userId).getUserName();
-        Message message = new Message();
-        message.setTarget_user_id(userId);
-        if (attitude) message.setContent("同意");
-        else message.setContent("拒绝");
-        noticeService.sendMessage(message, 0, "管理员", receiverName, 2);
+        String content = null;
+        if (attitude) content = "同意";
+        else content = "拒绝";
+        noticeService.sendMessage(content, userId, 0, "管理员", receiverName, 2);
         appealService.updateIsDeal(appeal_id);
         return Result.create(200, "success");
     }
