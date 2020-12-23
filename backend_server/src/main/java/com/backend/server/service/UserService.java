@@ -43,7 +43,7 @@ public class UserService {
             }
             String role = dbUser.getIsAdmin()==1 ? "ADMIN" : "USER";
             String userInfoStr = dbUser.getId() + ";;" + dbUser.getUserName() + ";;" + dbUser.getIsAdmin();
-            return createToken(username,userInfoStr,role);
+            return createToken(username,dbUser.getId(),userInfoStr,role);
         } catch (Exception e) {
             System.out.println("系统登录异常! " + e);
             e.printStackTrace();
@@ -73,7 +73,7 @@ public class UserService {
         userMapper.insert(userToAdd);
         Integer id = getUserByName(username).getId();
         String userInfoStr = id + ";;" + username + ";;" + 0;
-        return createToken(username,userInfoStr,"USER");
+        return createToken(username,id,userInfoStr,"USER");
     }
 
     /**
@@ -125,12 +125,12 @@ public class UserService {
     /**
      * 生成token
      */
-    public Map<String, Object> createToken(String username, String userInfoStr,String role) {
+    public Map<String, Object> createToken(String username,Integer userId, String userInfoStr,String role) {
         final String randomKey = jwtTokenUtil.getRandomKey();
         final String token = jwtTokenUtil.generateToken(userInfoStr, randomKey);
-//        System.out.println("token = " + token);
         Map<String, Object> map = new HashMap<>();
         map.put("name", username);
+        map.put("user_id", userId);
         map.put("roles", role);
         map.put("token", token);
         return map;
