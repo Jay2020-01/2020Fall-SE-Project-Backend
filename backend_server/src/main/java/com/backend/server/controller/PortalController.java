@@ -130,4 +130,10 @@ public class PortalController {
             return Result.create(200,"发送成功");
         }
     }
+
+    @PostMapping("/personal_center/academic_homepage/unbind")
+    public Result unBindPortal(String aid) {
+        authorService.unBindById(aid);
+        return Result.create(200,"解绑成功");
+    }
 }

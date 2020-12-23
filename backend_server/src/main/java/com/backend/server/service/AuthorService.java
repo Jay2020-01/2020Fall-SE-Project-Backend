@@ -38,6 +38,12 @@ public class AuthorService {
         return authors;
     }
 
+    /**
+     * 绑定门户
+     * @param userId
+     * @param username
+     * @param authorId
+     */
     public void bindUser(Integer userId, String username, String authorId) {
         Query query = new Query(Criteria.where("aid").is(authorId));
         Update update = new Update().set("user_id", userId).set("username", username);
@@ -45,6 +51,10 @@ public class AuthorService {
     }
 
 
+    /**
+     * 更新门户信息
+     * @param author
+     */
     public void updateById(Change author) {
         Query query = new Query(Criteria.where("aid").is(author.getAid()));
         Update update = new Update().set("name", author.getExpertName()).set("phone", author.getPhoneNumber()).set("email", author.getEmail())
@@ -52,7 +62,14 @@ public class AuthorService {
                                     .set("sex", author.getSex()).set("expertInfo", author.getExpertInfo()).set("work", author.getWork()).set("edu", author.getEdu());
         mongoTemplate.updateFirst(query, update,"author");
     }
-    
+
+    /**
+     * 搜索门户
+     * @param name
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     public Page<Map> findAuthorByName(String name, Integer pageNum, Integer pageSize) {
     	Query query = new Query(Criteria.where("name").is(name));
     	Pageable pageable = PageRequest.of(pageNum, pageSize);
@@ -65,5 +82,15 @@ public class AuthorService {
         if (list.size() == pageSize) count += pageSize;
         else if (list.size() == 0) count -= pageSize;
         return new PageImpl<Map>(list, pageable, count);
+    }
+
+    /**
+     * 解除门户绑定
+     * @param aid
+     */
+    public void unBindById(String aid) {
+        Query query = new Query(Criteria.where("aid").is(aid));
+        Update update = new Update().unset("user_id");
+        mongoTemplate.updateFirst(query, update, "author");
     }
 }
