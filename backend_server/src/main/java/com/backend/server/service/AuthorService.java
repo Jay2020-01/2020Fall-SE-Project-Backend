@@ -3,6 +3,7 @@ package com.backend.server.service;
 import com.backend.server.entity.Author;
 import com.backend.server.entity.pojo.Certification;
 import com.backend.server.entity.pojo.Change;
+import com.backend.server.entity.pojo.MessageList;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -92,5 +93,14 @@ public class AuthorService {
         Query query = new Query(Criteria.where("aid").is(aid));
         Update update = new Update().unset("user_id");
         mongoTemplate.updateFirst(query, update, "author");
+    }
+
+
+    public void getNameByUserId(List<MessageList> personList) {
+        for (MessageList messageList : personList) {
+            Query query = new Query(Criteria.where("user_id").is(messageList.getId()));
+            Map author = mongoTemplate.findOne(query, Map.class, "author");
+            messageList.setAuthorName((String) author.get("name"));
+        }
     }
 }

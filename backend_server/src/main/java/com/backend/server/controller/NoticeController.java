@@ -3,6 +3,7 @@ package com.backend.server.controller;
 import com.backend.server.entity.Notice;
 import com.backend.server.entity.pojo.MessageList;
 import com.backend.server.entity.pojo.Result;
+import com.backend.server.service.AuthorService;
 import com.backend.server.service.NoticeService;
 import com.backend.server.service.UserService;
 import com.backend.server.utils.JwtTokenUtil;
@@ -22,6 +23,9 @@ public class NoticeController {
     private UserService userService;
 
     @Autowired
+    private AuthorService authorService;
+
+    @Autowired
     private JwtTokenUtil util;
 
     //私信
@@ -37,6 +41,8 @@ public class NoticeController {
         //Integer userId = 18;
         List<Notice> notices = noticeService.getMessageByUserId(userId);
         List<MessageList> personList = userService.getUserByNotice(notices, userId);
+        authorService.getNameByUserId(personList);
+
         return Result.create(200, "success", personList);
     }
 
@@ -46,7 +52,6 @@ public class NoticeController {
         //Integer userId = util.getUserIdFromRequest(request);
         //Integer userId = 18;
         List<Notice> notices = noticeService.getMessageByIds(userId, target);
-
         return Result.create(200, "success", notices);
     }
 
