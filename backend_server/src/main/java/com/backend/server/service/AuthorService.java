@@ -98,9 +98,11 @@ public class AuthorService {
 
     public void getNameByUserId(List<MessageList> personList) {
         for (MessageList messageList : personList) {
-            Query query = new Query(Criteria.where("user_id").is(messageList.getId()));
-            Map author = mongoTemplate.findOne(query, Map.class, "author");
-            if(author != null) messageList.setAuthorName((String) author.get("name"));
+            if (messageList.getAid() != null && !messageList.getAid().equals("")) {
+                Query query = new Query(Criteria.where("aid").is(messageList.getAid()));
+                Map author = mongoTemplate.findOne(query, Map.class, "author");
+                messageList.setAuthorName((String) author.get("name"));
+            }
         }
     }
 }
