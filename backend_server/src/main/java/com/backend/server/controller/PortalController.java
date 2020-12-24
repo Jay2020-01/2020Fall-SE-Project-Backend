@@ -110,6 +110,7 @@ public class PortalController {
         //成功关联用户与门户
         String username = userService.getUserById(userId).getName();
         authorService.bindUser(userId, username, aid);
+        userService.bindPortal(userId, aid);
 
         return Result.create(200, "success");
     }
@@ -134,6 +135,7 @@ public class PortalController {
     @PostMapping("/personal_center/academic_homepage/unbind")
     public Result unBindPortal(String aid) {
         authorService.unBindById(aid);
+        userService.unBindById(aid);
         return Result.create(200,"解绑成功");
     }
 }

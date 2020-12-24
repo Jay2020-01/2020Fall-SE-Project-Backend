@@ -21,4 +21,5 @@ public class User {
     private String occupation; //职业
     private String institution;//机构
     private Integer isAdmin; // 是否管理员
+    private String aid;
 }

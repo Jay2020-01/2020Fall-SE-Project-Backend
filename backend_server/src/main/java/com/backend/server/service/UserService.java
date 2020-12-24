@@ -5,6 +5,7 @@ import com.backend.server.entity.User;
 import com.backend.server.entity.pojo.MessageList;
 import com.backend.server.utils.JwtTokenUtil;
 import com.backend.server.mapper.UserMapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -181,4 +182,17 @@ public class UserService {
         return messageLists;
     }
 
+    public void bindPortal(Integer userId, String aid) {
+        User user = userMapper.selectById(userId);
+        user.setAid(aid);
+        userMapper.updateById(user);
+    }
+
+    public void unBindById(String aid) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("aid", aid);
+        User user = userMapper.selectOne(queryWrapper);
+        user.setAid("");
+        userMapper.updateById(user);
+    }
 }
