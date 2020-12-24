@@ -5,6 +5,7 @@ package com.backend.server;
 import com.backend.server.dao.AuthorDaoImp;
 import com.backend.server.dao.PaperDaoImp;
 import com.backend.server.entity.Author;
+import com.backend.server.entity.Follow;
 import com.backend.server.mapper.FavorMapper;
 import com.backend.server.mapper.FollowMapper;
 import com.backend.server.mapper.UserMapper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,8 +48,15 @@ class BackendServerApplicationTests {
 
     @Test
     void demo(){
-        if(followService.isFollowed(26,"53f4278bdabfaeb1a7b5abb9"))
-            System.out.println("OKK");
+        Map<String, Object> columnMap = new HashMap<>();
+        columnMap.put("follower_id",2);
+        List<Follow> ids = followMapper.selectByMap(columnMap);
+        System.out.println("ids = " + ids);
+        List<Author> authors = new ArrayList<>();
+        for(Follow f:ids) {
+            authors.add(authorDaoImp.findAuthorById(f.getFollowingId()));
+        }
+        System.out.println("authors = " + authors);
     }
 
     @Test

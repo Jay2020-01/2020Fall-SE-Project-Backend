@@ -18,11 +18,11 @@ public class Author implements Serializable {
 
     private String aid;
     private String name;
-    private Integer hIndex;
+    private Integer h_index;
     private List<tag> tags;
     private List<pub> pubs;
-    private Integer nPubs;
-    private Integer nCitation;
+    private Integer n_pubs;
+    private Integer n_citation;
     private List<String> orgs;
     private String position;
     private List<String> pidDoc;
