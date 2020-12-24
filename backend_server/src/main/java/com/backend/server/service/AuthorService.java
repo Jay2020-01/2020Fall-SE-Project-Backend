@@ -100,7 +100,7 @@ public class AuthorService {
         for (MessageList messageList : personList) {
             Query query = new Query(Criteria.where("user_id").is(messageList.getId()));
             Map author = mongoTemplate.findOne(query, Map.class, "author");
-            messageList.setAuthorName((String) author.get("name"));
+            if(author != null) messageList.setAuthorName((String) author.get("name"));
         }
     }
 }
